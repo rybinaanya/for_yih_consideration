@@ -7,3 +7,4 @@ R Markdown scripts:
 
 
 `K12_merged` and `Nissle_merged` are gene count matrices obtained using the featureCounts software
+`K12_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper.tsv` and `Nissle_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper_extended.tsv` are dataframes that combine results from DESeq2, operon mapper and DAVID analysis
