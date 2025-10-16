@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 0. Prerequisites: installation and import of libraries
 
-The current work requires the following packages (R version: 3.6.3):
+The current work done using the following packages (R version: 4.2.2):
 
 ```{r message=FALSE, warning = FALSE}
 require('ggplot2')
