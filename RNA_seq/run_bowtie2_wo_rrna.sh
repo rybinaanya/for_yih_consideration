@@ -1,6 +1,4 @@
 #!/bin/bash
-#PBS -d .
-#PBS -l walltime=100:00:00,mem=20gb
 # Usage:
 #   ./run_bowtie2_wo_rrna.sh -r /path/to/reads -w /path/to/workdir -o /path/to/output
 #
