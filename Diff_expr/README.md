@@ -3,7 +3,7 @@ The current folder contains minimal set of scripts used to perform differential 
 R Markdown scripts:
 * `run_gseKegg.Rmd`: generates gene expression heatmaps of top-enriched KEGG pathways in *E. coli* K-12 and Nissle 1917 strains (`Figure 6`)
 * `plot_qrtPCR_growth.Rmd`: plots results of qRT-PCR (`Figure 4`) and growth curves experiments (`Figure 5`)
-
+* `runDESeq2.Rmd`: assesses quality of RNA-seq samples (`Figure S1`), performs differential expression analysis, and generates volcano plots (`Figure 3`), 
 
 Data:
 * `growth_curves.tsv` containd OD600 values from bacterial growth experiments and serves as input data for the `plot_qrtPCR_growth.Rmd` script
