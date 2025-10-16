@@ -3,7 +3,8 @@ The current folder contains minimal set of scripts used to perform differential 
 R Markdown scripts:
 * `run_gseKegg.Rmd` to generate gene expression heatmaps of top-enriched KEGG pathways in *E. coli* K-12 and Nissle 1917 strains (`Figure 6`)
 * `plot_qrtPCR_growth.Rmd`to plot results of qRT-PCR (`Figure 4`) and growth curves experiments (`Figure 5`)
-* `runDESeq2.Rmd` to assess quality of RNA-seq samples (`Figure S1`), perform differential expression analysis, and generate volcano plots (`Figure 3`), 
+* `runDESeq2.Rmd` to assess quality of RNA-seq samples (`Figure S1`), perform differential expression analysis, and generate volcano plots (`Figure 3`)
+* `plot_KEGG_pathways.Rmd` to generate KEGG pathway maps (`Figure S2- S5`) 
 
 Data:
 * `growth_curves.tsv` contains OD600 values from bacterial growth experiments and serves as input data for the `plot_qrtPCR_growth.Rmd` script
@@ -11,3 +12,4 @@ Data:
 * `K12_merged` and `Nissle_merged` are gene count matrices obtained using the featureCounts software and serve as input data for the `runDESeq2.Rmd` script
 * `K12_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper.tsv` and `Nissle_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper_extended.tsv` are dataframes that combine results from DESeq2, operon mapper and DAVID analysis; serve as input data for the `runDESeq2.Rmd` script
 * `UpSet_data_Nissle_vs_K12.csv` contains log2FoldChange values and gene IDs for both strains and serves as input data for the `run_gseKegg.Rmd` script
+* `locus_tags_Nissle2K12_mmseqs2_rbh.txt` is a result of the MMseqs2 software (reciprocal best-hit search) and provides gene mapping between K-12 and Nissle 1917 strains; serves as input for `plot_KEGG_pathways.Rmd` 
