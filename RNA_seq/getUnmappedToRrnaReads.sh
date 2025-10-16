@@ -1,6 +1,4 @@
 #!/bin/bash
-#PBS -d .
-#PBS -l walltime=48:00:00,mem=20gb
 # Usage:
 #   ./getUnmappedToRrnaReads.sh -r /path/to/reads -w /path/to/workdir -o /path/to/output
 #
