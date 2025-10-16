@@ -10,3 +10,4 @@ Data:
 * `growth_curves.tsv` containd OD600 values from bacterial growth experiments
 * `qrt_pcr_2**ddCT.tsv` and `qrt_pcr_extended.txt` provide data on gene expression values obtained by qRT-PCR
 * `K12_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper.tsv` and `Nissle_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper_extended.tsv` are dataframes that combine results from DESeq2, operon mapper and DAVID analysis
+* `UpSet_data_Nissle_vs_K12.csv` contains log2FoldChange values and gene IDs for both strains
