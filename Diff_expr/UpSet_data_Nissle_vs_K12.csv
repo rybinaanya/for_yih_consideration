@@ -1,0 +1,612 @@
+nissle_up	nissle_down	k12_up	k12_down	id	Category_COG	L2FC_K12	L2FC_Nissle	gene
+True	False	False	False	b0856	Amino acid transport and metabolism [E]		2.01104458608189	potH
+True	False	False	False	b1607	General function prediction only [R]		2.0189044444393	ydgC
+True	False	False	False	b3688	General function prediction only [R]		2.02008172435481	yidQ
+True	False	False	False	b2259			2.04033570061592	pmrD
+True	False	False	False	b3672		-1.02042338740185	2.0572711851306	ivbL
+True	False	False	False	b4142	Posttranslational modification, protein turnover, chaperones [O]		2.0730192330389	groS
+True	False	True	False	b4045	Function unknown [S]	3.27537709514847	2.07352950955641	yjbJ
+True	False	False	False	b4332			2.0824381441675	yjiJ
+True	False	True	False	b2126	Signal transduction mechanisms [T]	2.11805944429985	2.10053323678357	btsS
+True	True	False	False		Inorganic ion transport and metabolism [P]		8.48412438193984	cds-WP_001528902.1
+True	False	False	False	b3055	Signal transduction mechanisms [T]		2.11795445128729	ygiM
+True	False	True	False	b3001	Energy production and conversion [C]	2.95895010585315	2.12609232797374	gpr
+True	False	False	False	b3073	Amino acid transport and metabolism [E]	1.3649146910159	2.13065649907127	patA
+True	False	False	False	b1836		1.34749913489104	2.14902039553911	yebV
+True	False	True	False	b2584	Energy production and conversion [C]	2.92273840215618	2.155650984885	patZ
+True	False	True	False	b3927	Carbohydrate transport and metabolism [G]	4.46383512974375	2.18018711411956	glpF
+True	False	False	False	b0211	Cell wall/membrane/envelope biogenesis [M]	-0.53544980905784	2.1830093230423	mltD
+True	False	False	False	b3934	Transcription [K]		2.2244465594037	cytR
+True	False	False	False	b2866	Energy production and conversion [C]		2.23171064915182	xdhA
+True	False	False	False	b0032	Amino acid transport and metabolism [E]		2.23313622600305	carA
+True	False	False	False	b0118	Energy production and conversion [C]		2.23316549404022	acnB
+True	False	False	False	b3425	Inorganic ion transport and metabolism [P]		2.24407798297956	glpE
+True	False	False	False	b2311	Coenzyme transport and metabolism [H]		2.24999670750116	ubiX
+True	False	True	False	b2535	Transcription [K]	3.64469826414552	2.26110745115836	csiE
+True	False	False	False	b0030	Nucleotide transport and metabolism [F]		2.29925301412246	rihC
+True	False	True	False	b1957	Function unknown [S]	2.80598750393418	2.30517808905943	yodC
+True	False	False	False	b2964			2.35016914552532	nupG
+True	False	False	False	b3041	Coenzyme transport and metabolism [H]		2.35206696048207	ribB
+True	False	False	True	b0432	Energy production and conversion [C]	-3.0295440036235	2.35556148013989	cyoA
+True	False	False	False	b3873			2.35834659178934	yihM
+True	False	True	False	b1040	Signal transduction mechanisms [T]	2.38920350301661	2.36668781716694	csgD
+True	False	False	False	b1055	General function prediction only [R]		2.36893200973964	trhO
+True	False	False	False	b3511	Function unknown [S]	0.918215009881494	2.3709622334462	hdeD
+True	False	False	False	b3093	Carbohydrate transport and metabolism [G]	1.44030312457378	2.38123439817312	exuT
+True	False	True	False	b4037		3.34569712928315	2.39894941003613	malM
+True	False	False	False	b4245	Nucleotide transport and metabolism [F]		2.44135838245591	pyrB
+True	False	False	False	b2157	Transcription [K]	-0.709939055499175	2.45241591004716	yeiE
+True	False	False	False	b4090	Carbohydrate transport and metabolism [G]		2.47740295108259	rpiB
+True	False	False	False	b4487			2.49344940770271	yjdP
+True	False	False	False	b1498	Inorganic ion transport and metabolism [P]		2.50831771856182	ydeN
+True	False	False	False	b3496	Amino acid transport and metabolism [E]	1.48368076152453	2.52275739210278	dtpB
+True	False	False	False	b1308	Inorganic ion transport and metabolism [P]	1.53075106214512	2.53860843367222	pspE
+True	False	False	False	b2550	Transcription [K]		2.54670488370385	yphH
+True	False	False	False	b1976	Function unknown [S]	1.68259355250575	2.55194927655783	mtfA
+True	False	False	False	b2838	Amino acid transport and metabolism [E]		2.55279472533851	lysA
+True	False	True	False	b4357	Transcription [K]	2.97731565307524	2.59803998675319	lgoR
+True	False	True	False	b1805	Lipid transport and metabolism [I]	5.18623459991149	2.60051726411973	fadD
+True	False	False	False	b1521	Carbohydrate transport and metabolism [G]		2.60797794377753	uxaB
+True	False	False	False	b3546	General function prediction only [R]		2.61598869903166	eptB
+True	False	False	False	b0314	Cell wall/membrane/envelope biogenesis [M]	-1.6229438582262	2.62819838221684	betT
+True	False	False	False	b3082	Transcription [K]		2.63669024050349	higA
+True	False	False	False	b3512		0.900361355620709	2.63740310731297	gadE
+True	False	False	False	b3570	General function prediction only [R]		2.64826612928331	bax
+True	False	False	False	b4055	General function prediction only [R]		2.65862077468944	aphA
+True	False	True	False	b0880	Transcription [K]	4.12537900491343	2.69116931642719	cspD
+True	False	False	False	b4018	Transcription [K]		2.70106163978979	iclR
+True	False	False	False	b2845	Amino acid transport and metabolism [E]		2.7047579468322	yqeG
+True	False	False	False	b0342	General function prediction only [R]		2.5672100300057	lacA
+True	False	False	False	b0344	Carbohydrate transport and metabolism [G]		2.73263569560617	lacZ
+True	False	False	False	b0343	Carbohydrate transport and metabolism [G]		2.57912011616157	lacY
+True	False	True	False	b0048	Coenzyme transport and metabolism [H]	2.21354727176109	2.74499164197753	folA
+True	False	False	False	b3820	Secondary metabolites biosynthesis, transport and catabolism [Q]		2.75105626386441	yigI
+True	False	False	False	b4529	General function prediction only [R]	0.822039299167854	2.75180222009877	ydbJ
+True	False	True	False	b4034	Carbohydrate transport and metabolism [G]	2.93528043782655	2.81421765810433	malE
+True	False	True	False	b4032	Carbohydrate transport and metabolism [G]	3.18093490450587	2.27434582241309	malG
+True	False	False	False	b3092	Carbohydrate transport and metabolism [G]		2.83312558867296	uxaC
+True	False	False	False	b3091	Carbohydrate transport and metabolism [G]		2.30024491264459	uxaA
+True	False	False	False	b1163		-0.929264471930325	2.83859246914628	bluF
+True	False	False	False	b1777	Function unknown [S]		2.64330953870156	yeaC
+True	False	False	False	b1778	Posttranslational modification, protein turnover, chaperones [O]		2.87959385159361	msrB
+True	False	True	False	b2975	Energy production and conversion [C]	2.6120695910764	2.88493314788683	glcA
+True	False	False	False	b0623	Transcription [K]		2.93144246257426	cspE
+True	False	False	False	b1702	Carbohydrate transport and metabolism [G]		2.93660046468055	ppsA
+True	False	False	False	b2587	Carbohydrate transport and metabolism [G]		2.94002892155294	kgtP
+True	False	False	False	b0240			2.95580744755801	crl
+True	False	False	False	b2518	Nucleotide transport and metabolism [F]		2.98449606976046	ndk
+True	False	False	False	b0651	Nucleotide transport and metabolism [F]	1.95175860099195	2.99906678187427	rihA
+True	False	True	False	b0598	Signal transduction mechanisms [T]	2.41435020726232	3.01601082384755	cstA
+True	False	False	False	b4512	Function unknown [S]		2.99190514580625	ybdD
+True	False	False	False	b1617	Carbohydrate transport and metabolism [G]		3.06654088996001	uidA
+True	False	False	False	b2172	Carbohydrate transport and metabolism [G]		3.07221648402835	yeiQ
+True	False	True	False	b4036	Carbohydrate transport and metabolism [G]	3.12551148158552	3.08002777618049	lamB
+True	False	True	False	b4035	Carbohydrate transport and metabolism [G]	6.69162360093469	2.54682320154759	malK
+True	False	False	False	b0720	Energy production and conversion [C]	-0.776085824587912	3.0924917251952	gltA
+True	False	False	False	b2181		0.855151902961382	3.10618725225685	yejG
+True	False	False	False	b3744	Amino acid transport and metabolism [E]		3.12978641991427	asnA
+True	False	True	False	b4216	General function prediction only [R]	4.58388340597937	3.13438931673465	ytfJ
+True	False	True	False	b2869	Transcription [K]	3.74444155534291	3.16555891252921	ygeV
+True	False	False	False	b1738	Carbohydrate transport and metabolism [G]		3.19207450919362	chbB
+True	False	True	False	b4518	General function prediction only [R]	2.38359633450842	3.21689594783005	ymdF
+True	False	False	False	b3962	Energy production and conversion [C]		3.23065857493494	sthA
+True	False	True	False	b1423	Function unknown [S]	2.70623054197656	3.24224352683944	ydcJ
+True	False	False	False	b0306	Energy production and conversion [C]		3.28626650376142	ykgE
+True	False	False	False	b3115	Energy production and conversion [C]		3.03259248744206	tdcD
+True	False	False	False	b3114	Energy production and conversion [C]		2.06347761098845	tdcE
+True	False	False	False	b3118	Transcription [K]		3.29978423578948	tdcA
+True	False	True	False	b2342	Lipid transport and metabolism [I]	4.9512335241312	3.22407600083607	fadI
+True	False	True	False	b2341	Lipid transport and metabolism [I]	3.37562672956882	3.32803643623198	fadJ
+True	False	False	False	b3510		1.32805717528587	3.36013599112581	hdeA
+True	False	False	False	b1493	Amino acid transport and metabolism [E]	0.765075792627126	3.36836075384499	gadB
+True	False	False	False	b1492	Amino acid transport and metabolism [E]	1.1964035687033	2.02989554737463	gadC
+True	False	False	False	b3403	Energy production and conversion [C]	1.69098888486988	3.37605630472432	pck
+True	False	True	False	b3528	Energy production and conversion [C]	3.17100717252444	3.38946654811243	dctA
+True	False	True	False	b2344	Lipid transport and metabolism [I]	4.86841802017355	3.42907634634031	fadL
+True	False	False	False	b4322	Carbohydrate transport and metabolism [G]		3.46341134531187	uxuA
+True	False	False	False	b4323	Carbohydrate transport and metabolism [G]		3.31776660228845	uxuB
+True	False	False	False	b3509		1.02665205751673	3.57187717925097	hdeB
+True	False	False	False	b4089	Transcription [K]		2.52086607791092	alsR
+True	False	False	False	b4088	Carbohydrate transport and metabolism [G]		3.6118775413515	alsB
+True	False	False	False	b3269	Amino acid transport and metabolism [E]		2.64876174461408	yhdX
+True	False	False	False	b3271	Amino acid transport and metabolism [E]		2.57716628133761	yhdZ
+True	False	False	False	b1543	Carbohydrate transport and metabolism [G]		3.70907919088689	ydfJ
+True	False	False	False	b1581	Cell wall/membrane/envelope biogenesis [M]		2.14956403352513	rspA
+True	False	True	False	b1443	Amino acid transport and metabolism [E]	4.42023472457167	3.75122163684901	ydcV
+True	False	True	False	b1440	Amino acid transport and metabolism [E]	5.84306948755055	3.53391497942506	ydcS
+True	False	True	False	b1442	Amino acid transport and metabolism [E]	4.47395031850337	3.84861753116904	ydcU
+True	False	True	False	b1444	Energy production and conversion [C]	4.20483096367032	3.45134982102052	patD
+True	False	False	False	b2805	Transcription [K]		2.60403786121564	fucR
+True	False	False	False	b2801	Carbohydrate transport and metabolism [G]		3.86999971307698	fucP
+True	False	False	False	b0716			3.88825939006325	cds-K8943_RS20240
+True	False	False	False	b0652	Amino acid transport and metabolism [E]		3.65102227903441	gltL
+True	False	False	False	b0654	Amino acid transport and metabolism [E]		3.90460000619289	gltJ
+True	False	False	False	b0655	Amino acid transport and metabolism [E]		3.90301003309902	gltI
+True	False	False	False	b0653	Amino acid transport and metabolism [E]		3.55229058746059	gltK
+True	False	True	False	b3566	Carbohydrate transport and metabolism [G]	6.49680719013683	3.92661246606383	xylF
+True	False	False	False	b3225	Amino acid transport and metabolism [E]		4.04519379106469	nanA
+True	False	False	False	b3222	Transcription [K]		2.27754836173642	nanK
+True	False	True	False	b3224	Carbohydrate transport and metabolism [G]	2.78192598352707	2.58203846381642	nanT
+True	False	True	False	b4139	Amino acid transport and metabolism [E]	3.44961768814525	4.12064419486826	aspA
+True	False	True	False	b4577		4.27165853071294	4.13813863357982	sgrS
+True	False	False	False	b1190	Cell wall/membrane/envelope biogenesis [M]	1.47343674456888	3.69319167687339	dadX
+True	False	False	False	b1189	Amino acid transport and metabolism [E]	1.53437578256789	4.14474795660484	dadA
+True	False	True	False	b1426	Function unknown [S]	3.73681830208647	4.18522353418132	ydcH
+True	False	False	False	b4208	Amino acid transport and metabolism [E]	0.960887732733269	4.26399895842378	cycA
+True	False	True	False	b0063	Energy production and conversion [C]	3.27389191767131	4.28539178471513	araB
+True	False	True	False	b0062	Carbohydrate transport and metabolism [G]	2.76646279384806	3.7219292546931	araA
+True	False	False	False	b1422	Transcription [K]		4.35317771025968	ydcI
+True	False	True	False	b0791		3.36527086964937	4.4751992467092	ybhQ
+True	False	True	False	b0380		2.26633469578703	4.50189376046455	yaiZ
+True	False	False	False	b3603	Energy production and conversion [C]		4.55308996829527	lldP
+True	False	False	False	b3604	Transcription [K]		2.25346086468797	lldR
+True	False	True	False	b3081	Energy production and conversion [C]	4.9396732989342	4.55523610503272	fadH
+True	False	False	False	b3752	Carbohydrate transport and metabolism [G]		3.4167811562973	rbsK
+True	False	True	False	b3751	Carbohydrate transport and metabolism [G]	2.80616898139625	4.64152664071126	rbsB
+True	False	True	False	b3748	Carbohydrate transport and metabolism [G]	3.95868742621036	4.59988338210975	rbsD
+True	False	True	False	b3750	Carbohydrate transport and metabolism [G]	2.63152557124195	4.06106885436875	rbsC
+True	False	False	False	b3753	Transcription [K]		3.0897441880902	rbsR
+True	False	True	False	b3749	Carbohydrate transport and metabolism [G]	2.60616734095397	4.49523525178274	rbsA
+True	False	False	False	b1842			4.64637640053201	holE
+True	False	True	False	b3588	Energy production and conversion [C]	5.44781017452136	4.73153586834861	aldB
+True	False	True	False	b1901	Carbohydrate transport and metabolism [G]	6.57195241312045	4.73892686154095	araF
+True	False	False	False	b4460	Carbohydrate transport and metabolism [G]		2.64594275835705	araH
+True	False	True	False	b1900	Carbohydrate transport and metabolism [G]	2.74011726265934	2.72830459725096	araG
+True	False	False	False	b0681			4.75139122598034	chiP
+True	False	True	False	b4227	Carbohydrate transport and metabolism [G]	4.11598989444143	4.92462379340807	ytfQ
+True	False	True	False	b4485	Carbohydrate transport and metabolism [G]	3.98623188408888	2.36904547281887	ytfR
+True	False	True	False	b4230	General function prediction only [R]	2.72997563638879	2.32019630255486	ytfT
+True	False	True	False	b2663	Amino acid transport and metabolism [E]	2.99247994068296	2.13648402523555	gabP
+True	False	True	False	b2660	General function prediction only [R]	2.98094365361164	2.67038569882051	lhgD
+True	False	True	False	b2659		3.65312807830785	4.97421370250295	glaH
+True	False	True	False	b3453	Carbohydrate transport and metabolism [G]	2.25524314543421	5.04555621223489	ugpB
+True	False	False	False	b3451	Carbohydrate transport and metabolism [G]	1.47336600422974	2.39837981540453	ugpE
+True	False	False	False	b3450	Carbohydrate transport and metabolism [G]	1.87923590111777	2.34778113401889	ugpC
+True	False	False	False	b1611	Energy production and conversion [C]	1.03220175577456	3.83491236326235	fumC
+True	False	False	False	b1612	Energy production and conversion [C]	1.65763478281715	5.08423690618058	fumA
+True	False	False	False	b2165	Secondary metabolites biosynthesis, transport and catabolism [Q]		4.2517693457462	psuG
+True	False	False	False	b2166	Carbohydrate transport and metabolism [G]		5.13555070236935	psuK
+True	False	True	False	b2980	Transcription [K]	2.33200758688233	5.15002556623749	glcC
+True	False	True	False	b4189		5.83544102422949	5.19925151303301	bsmA
+True	False	False	False	b0379	Function unknown [S]		5.24685015630009	yaiY
+True	False	True	False	b0221	Lipid transport and metabolism [I]	4.53724293860538	5.25013455953153	fadE
+True	False	False	False	b0722	Energy production and conversion [C]		5.27444056829628	sdhD
+True	False	False	False	b0721	Energy production and conversion [C]		5.39704105510114	sdhC
+True	False	False	False	b0724	Energy production and conversion [C]		3.27331198263763	sdhB
+True	False	False	False	b0723	Energy production and conversion [C]		4.80393301373167	sdhA
+True	False	False	False	b0330	Transcription [K]		5.53544349571278	prpR
+True	False	True	False	b0331	Carbohydrate transport and metabolism [G]	12.2408445139063	4.95729389172462	prpB
+True	False	True	False	b0334	General function prediction only [R]	11.0262527161036	5.57196860545306	prpD
+True	False	True	False	b0335	Lipid transport and metabolism [I]	8.82118499129232	3.93748421466029	prpE
+True	False	True	False	b0333	Energy production and conversion [C]	11.2548088863978	3.97660355301235	prpC
+True	False	True	False	b1415	Energy production and conversion [C]	5.2149583401567	5.6715576030876	aldA
+True	False	False	False	b4014	Energy production and conversion [C]	0.878972491329235	5.73159850275634	aceB
+True	False	False	False	b4015	Energy production and conversion [C]	1.29132820978507	4.51547983377611	aceA
+True	False	False	False	b4016	Signal transduction mechanisms [T]	1.57435166092196	4.30996466388639	aceK
+True	False	True	False	b3708	Amino acid transport and metabolism [E]	5.37754031784818	5.77728841709387	tnaA
+True	False	True	False	b2844	Lipid transport and metabolism [I]	3.70804621323813	5.80915929729733	yqeF
+True	False	True	False	b2979	Energy production and conversion [C]	3.28893396641345	5.87482069104187	glcD
+True	False	False	False	b4467	Energy production and conversion [C]	1.89587799731661	3.65154813248322	glcF
+True	False	False	False	b2977	General function prediction only [R]		3.64323990439754	glcG
+True	False	False	False	b2976	Energy production and conversion [C]	1.05361379780037	3.18474567755001	glcB
+True	False	True	False	b4468	Energy production and conversion [C]	4.1714314037169	5.18665136042466	glcE
+True	False	True	False	b2148	Carbohydrate transport and metabolism [G]	3.10905673473133	4.83899859357806	mglC
+True	False	True	False	b2150	Carbohydrate transport and metabolism [G]	5.361155113802	5.85303361397826	mglB
+True	False	True	False	b2149	Carbohydrate transport and metabolism [G]	4.52603349569117	6.01520892312252	mglA
+True	False	True	False	b4188		4.18040949950557	6.12037034632113	yjfN
+True	False	True	False	b2310	Amino acid transport and metabolism [E]	2.20042716935355	6.48323141184162	argT
+True	False	True	False	b4069	Lipid transport and metabolism [I]	6.26375336994176	6.5451413511117	acs
+True	False	True	False	b4067	General function prediction only [R]	6.62727387043871	7.03763667585828	actP
+True	False	True	False	b4068	Function unknown [S]	7.46381452445254	5.98519282569069	yjcH
+True	False	True	False	b3845	Lipid transport and metabolism [I]	4.37520284839088	6.71118562858843	fadA
+True	False	True	False	b3846	Lipid transport and metabolism [I]	5.7259640269275	7.12127127556612	fadB
+True	False	True	False	b1744	Amino acid transport and metabolism [E]	4.95921136677021	6.36918784038863	astE
+True	False	True	False	b1745	Amino acid transport and metabolism [E]	4.92590212434242	6.82555780111508	astB
+True	False	True	False	b1746	Energy production and conversion [C]	5.12620403216903	6.86783227676307	astD
+True	False	True	False	b1747	Amino acid transport and metabolism [E]	5.73294880434485	7.94915483387227	astA
+True	False	True	False	b1748	Amino acid transport and metabolism [E]	5.28571436159551	8.30599241546909	astC
+True	False	False	False	K8943_RS18110				
+True	False	False	False	K8943_RS21715				
+True	False	False	False	K8943_RS22915				
+True	False	False	False	K8943_RS11090				
+True	False	False	False	K8943_RS17950				
+True	False	False	False	K8943_RS15750				
+True	False	False	False	K8943_RS10220				
+True	False	False	False	K8943_RS15660				
+True	False	False	False	K8943_RS15655				
+True	False	False	False	K8943_RS15650				
+True	False	False	False	K8943_RS08155				
+True	False	False	False	K8943_RS18065				
+True	False	False	False	K8943_RS21985				
+True	False	False	False	K8943_RS08375				
+True	False	False	False	K8943_RS08365				
+True	False	False	False	K8943_RS08360				
+True	False	False	False	K8943_RS08370				
+True	False	False	False	K8943_RS08380				
+True	False	False	False	K8943_RS18050				
+True	False	False	False	K8943_RS21990				
+False	True	False	False	b0365	Inorganic ion transport and metabolism [P]		-7.30663590491585	tauA
+False	True	False	False	b0368	Secondary metabolites biosynthesis, transport and catabolism [Q]		-2.78155595503454	tauD
+False	True	False	False	b0367	Inorganic ion transport and metabolism [P]		-3.04477657452364	tauC
+False	True	False	False	b2579	General function prediction only [R]		-6.71638411606999	grcA
+False	True	False	True	b3774	Amino acid transport and metabolism [E]	-3.0154061458719	-6.58676091224145	ilvC
+False	True	False	True	b2600	Amino acid transport and metabolism [E]	-3.93528755080838	-5.66377368482517	tyrA
+False	True	False	True	b2601	Amino acid transport and metabolism [E]	-2.9827319202974	-6.36726448392352	aroF
+False	True	False	True	b4354	Signal transduction mechanisms [T]	-2.1205100878401	-6.34969896121533	btsT
+False	True	False	False	b4353	Function unknown [S]		-3.66187216291024	yjiX
+False	True	False	False	b4352	General function prediction only [R]		-2.33405868143961	yjiA
+False	True	False	True	b1596	Carbohydrate transport and metabolism [G]	-2.07635510033347	-5.88661285478333	ynfM
+False	True	False	False	b3917	Inorganic ion transport and metabolism [P]		-5.26681578727175	sbp
+False	True	False	False	b3918	Lipid transport and metabolism [I]		-2.71904349102184	cdh
+False	True	False	True	b0699		-2.3234294597918	-5.18557259530044	ybfA
+False	True	False	False	b3366	Inorganic ion transport and metabolism [P]		-5.05984726796579	nirD
+False	True	False	False	b3365	Energy production and conversion [C]		-4.80876410335978	nirB
+False	True	False	False	b3367	Inorganic ion transport and metabolism [P]		-3.94452437517067	nirC
+False	True	False	True	b3829	Amino acid transport and metabolism [E]	-3.94299671417116	-4.81798747733023	metE
+False	True	False	False	b1907	Amino acid transport and metabolism [E]		-4.63126273311551	tyrP
+False	True	False	False	b3941	Amino acid transport and metabolism [E]		-4.55314068272016	metF
+False	True	False	True	b1109	Energy production and conversion [C]	-3.57222358465101	-4.54518274247347	ndh
+False	True	False	False	b2141	General function prediction only [R]		-4.53512132986868	yohJ
+False	True	True	False	b2142	Cell wall/membrane/envelope biogenesis [M]	2.19630109046895	-2.38220219821907	yohK
+False	True	False	True	b4407	Coenzyme transport and metabolism [H]	-3.28687624862225	-3.97709885921334	thiS
+False	True	False	True	b3992	Coenzyme transport and metabolism [H]	-2.87288765617376	-4.09531177009471	thiF
+False	True	False	True	b3991	Coenzyme transport and metabolism [H]	-2.7326870703423	-4.23641724816229	thiG
+False	True	False	True	b3994	Coenzyme transport and metabolism [H]	-4.12491513697157	-4.3767530130282	thiC
+False	True	False	True	b3993	Coenzyme transport and metabolism [H]	-3.35733393260544	-4.49214028350775	thiE
+False	True	False	True	b3990	Coenzyme transport and metabolism [H]	-2.10763788327885	-3.54797013938975	thiH
+False	True	False	False	b3661	Inorganic ion transport and metabolism [P]		-4.40698368201716	nlpA
+False	True	False	False	b1987	Transcription [K]		-4.34274370967248	cbl
+False	True	False	False	b0600	Amino acid transport and metabolism [E]		-4.33298170074591	ybdL
+False	True	False	False	b3940	Amino acid transport and metabolism [E]	-1.45155147647803	-4.05017243703131	metL
+False	True	False	False	b3939	Amino acid transport and metabolism [E]		-3.34483632087841	metB
+False	True	False	False	b3364	Carbohydrate transport and metabolism [G]		-4.03310483636721	tsgA
+False	True	False	False	b1926			-3.79281851634926	fliT
+False	True	False	False	b1924	Cell Motility [N]		-3.07076286047191	fliD
+False	True	False	False	b1925	Cell Motility [N]		-2.78377970340609	fliS
+False	True	False	False	b1920	Amino acid transport and metabolism [E]		-3.77989823350688	tcyJ
+False	True	False	False	b2751	Inorganic ion transport and metabolism [P]	-1.96004951928631	-3.72234586358182	cysN
+False	True	False	False	b2749			-2.46123942322814	ygbE
+False	True	False	False	b2752	Amino acid transport and metabolism [E]	-1.7661459333919	-3.63792823407654	cysD
+False	True	False	True	b2750	Inorganic ion transport and metabolism [P]	-2.60331581521713	-3.1602882028624	cysC
+False	True	False	False	b1760			-3.71687513407113	ynjH
+False	True	False	False	b1943	Cell Motility [N]		-2.69203472906715	fliK
+False	True	False	False	b1938	Cell Motility [N]		-2.6945001629186	fliF
+False	True	False	False	b1949	Cell Motility [N]		-2.72757493859088	fliQ
+False	True	False	False	b1942	Cell Motility [N]		-2.83094229922659	fliJ
+False	True	False	False	b1940	Cell Motility [N]		-2.84084012038798	fliH
+False	True	False	False	b1941	Cell Motility [N]		-3.03719715329706	fliI
+False	True	False	False	b1939	Cell Motility [N]		-3.05254695488044	fliG
+False	True	False	False	b1945	Cell Motility [N]		-2.52853213721905	fliM
+False	True	False	False	b1948	Cell Motility [N]		-2.20260949228049	fliP
+False	True	False	False	b1946	Cell Motility [N]		-3.67652325527878	fliN
+False	True	False	False	b3410			-3.39786592770667	feoC
+False	True	False	False	b3409	Inorganic ion transport and metabolism [P]	-1.34202985809221	-3.67539566819048	feoB
+False	True	False	False	b3408	Inorganic ion transport and metabolism [P]		-3.20544379519398	feoA
+False	True	False	False	b2421	Amino acid transport and metabolism [E]	-1.57429704132739	-2.02403046825197	cysM
+False	True	False	False	b2425	Inorganic ion transport and metabolism [P]		-3.66102803093626	cysP
+False	True	False	False	b2424	Posttranslational modification, protein turnover, chaperones [O]		-3.3742319362373	cysT
+False	True	False	True	b2422	Inorganic ion transport and metabolism [P]	-2.59715526344241	-3.05945335790331	cysA
+False	True	False	True	b2423	Inorganic ion transport and metabolism [P]	-2.97363009102075	-3.01524894808512	cysW
+False	True	False	False	b1593	Coenzyme transport and metabolism [H]		-3.62791720202874	bioD
+False	True	False	False	b1241	Energy production and conversion [C]	1.10870518280997	-3.60512599857348	adhE
+False	True	False	False	b1287	Function unknown [S]		-3.55184586173301	yciW
+False	True	False	False	b3766		-1.92617926209864	-3.51507887283725	ilvL
+False	True	False	False	b0904	Inorganic ion transport and metabolism [P]	1.34705536940976	-3.49319037513254	focA
+False	True	False	False	b0903	Energy production and conversion [C]	0.95406566294682	-2.40648144028211	pflB
+False	True	False	False	b0831	Amino acid transport and metabolism [E]	-1.47407782319729	-2.83233804236098	gsiC
+False	True	False	False	b0829	General function prediction only [R]		-3.46175569197328	gsiA
+False	True	False	False	b0830	Amino acid transport and metabolism [E]	-0.785267519071092	-3.08812347945467	gsiB
+False	True	False	False	b0828	Amino acid transport and metabolism [E]		-3.21495189340509	iaaA
+False	True	False	False	b0832	Amino acid transport and metabolism [E]	-1.6758938988456	-2.59033307594027	gsiD
+False	True	False	False	b3411	Function unknown [S]		-3.3902922254081	cds-K8943_RS10920
+False	True	False	False	b1074	Cell Motility [N]		-3.38135225191986	flgC
+False	True	False	False	b1083			-2.71468660795808	flgL
+False	True	False	False	b1077	Cell Motility [N]		-2.8374997180222	flgF
+False	True	False	False	b1073	Cell Motility [N]		-2.79963683021722	flgB
+False	True	False	False	b1075	Cell Motility [N]		-2.73445001457068	flgD
+False	True	False	False	b1078	Cell Motility [N]		-2.87001924358143	flgG
+False	True	False	False	b1082	Cell Motility [N]		-2.87524164347977	flgK
+False	True	False	False	b1079	Cell Motility [N]		-2.88295759514018	flgH
+False	True	False	False	b1076	Cell Motility [N]		-2.47067438319002	flgE
+False	True	False	False	b1080	Cell Motility [N]		-2.95748559101804	flgI
+False	True	False	False	b1081	Cell wall/membrane/envelope biogenesis [M]		-2.5593686556301	flgJ
+False	True	False	True	b2763	Inorganic ion transport and metabolism [P]	-3.27640211190124	-2.805002437787	cysI
+False	True	False	True	b2762	Amino acid transport and metabolism [E]	-3.7467016139466	-3.31050602579093	cysH
+False	True	False	True	b2764	Inorganic ion transport and metabolism [P]	-2.04339199315798	-2.88470180389394	cysJ
+False	True	False	True	b4030	Function unknown [S]	-2.9613758560248	-3.30233487121089	psiE
+False	True	False	False	b0709	Amino acid transport and metabolism [E]		-3.27147448447774	dtpD
+False	True	False	True	b1528	Carbohydrate transport and metabolism [G]	-2.22326742094618	-3.1844714577104	ydeA
+False	True	False	False	b4110			-3.16374129379282	rdcB
+False	True	False	False	b4109	General function prediction only [R]		-2.53432059399304	crfC
+False	True	False	False	b0198	Inorganic ion transport and metabolism [P]	-1.42292613999727	-2.47284960429456	metI
+False	True	False	True	b0197	Inorganic ion transport and metabolism [P]	-2.42810034138542	-3.15518235006242	metQ
+False	True	False	False	b0199	Inorganic ion transport and metabolism [P]		-2.39739858711646	metN
+False	True	True	False	b2167	Carbohydrate transport and metabolism [G]	2.33883916307394	-2.07868929414446	fruA
+False	True	True	False	b2169	Carbohydrate transport and metabolism [G]	2.3717480326982	-3.14367200409565	fruB
+False	True	True	False	b2168	Carbohydrate transport and metabolism [G]	2.50672445125348	-2.87630467244142	fruK
+False	True	False	False	b0599	Energy production and conversion [C]		-3.12192490567705	hcxA
+False	True	False	True	b0388	Amino acid transport and metabolism [E]	-2.26078741942359	-3.11904973669173	aroL
+False	True	False	False	b3158	Posttranslational modification, protein turnover, chaperones [O]		-3.08120918830675	ubiU
+False	True	False	False	b3159			-3.09141924414135	ubiV
+False	True	False	True	b2913	Coenzyme transport and metabolism [H]	-2.11723582829056	-3.08344625038698	serA
+False	True	False	False	b2414	Amino acid transport and metabolism [E]	-1.99225290889513	-3.08097592756769	cysK
+False	True	False	False	b4122	Energy production and conversion [C]		-3.07266439567404	fumB
+False	True	False	False	b1883	Cell Motility [N]		-3.06501252341828	cheB
+False	True	False	False	b1878			-2.07119137491542	flhe
+False	True	False	False	b1884	Cell Motility [N]		-2.83259304196816	cheR
+False	True	False	False	b1879	Cell Motility [N]		-2.49168006295388	flhA
+False	True	False	False	b1881	Cell Motility [N]		-2.44615101469763	cheZ
+False	True	False	False	b1880	Cell Motility [N]		-2.47584958983397	flhB
+False	True	False	False	b1882	Signal transduction mechanisms [T]		-2.699907739624	cheY
+False	True	False	False	b1921			-2.51589117337519	fliZ
+False	True	False	False	b1922	Transcription [K]		-2.57970202365204	fliA
+False	True	False	False	b1923	Cell Motility [N]		-3.05936232967365	cds-WP_000079699.1
+False	True	False	False	b1070	Cell Motility [N]		-2.03196392861465	flgN
+False	True	False	False	b1072	Cell Motility [N]		-3.05637587393119	flgA
+False	True	False	False	b1071	Transcription [K]		-2.11668937504409	flgM
+False	True	False	False	b1729	General function prediction only [R]		-3.0373283076339	tcyP
+False	True	False	False	b1685		-0.898731674785653	-2.95701791377968	ydiH
+False	True	False	False	b1101	Carbohydrate transport and metabolism [G]	0.8823143059811	-2.9387375823142	ptsG
+False	True	False	False	b1380	Energy production and conversion [C]		-2.90735992585728	ldhA
+False	True	False	False	b0078	Amino acid transport and metabolism [E]		-2.90669972251759	ilvN
+False	True	False	False	b3525	Signal transduction mechanisms [T]		-2.89411836070186	pdeH
+False	True	False	False	b4355	Cell Motility [N]		-2.86161939888324	tsr
+False	True	False	True	b3212	Amino acid transport and metabolism [E]	-3.25307495633088	-2.54318521421612	gltB
+False	True	False	True	b3213	Amino acid transport and metabolism [E]	-3.01237016707745	-2.85954978710775	gltD
+False	True	False	False	b0797	Replication, recombination and repair [L]	-1.22808953967231	-2.82754108754036	rhlE
+False	True	False	False	b1904			-2.78321055401989	yecR
+False	True	False	False	b0814	Cell wall/membrane/envelope biogenesis [M]	-1.28369414158471	-2.77962712401162	ompX
+False	True	False	False	b4254	Amino acid transport and metabolism [E]		-2.74852328582777	argF
+False	True	False	True	b4013	Amino acid transport and metabolism [E]	-2.1837351525794	-2.59222211157899	metA
+False	True	False	False	b3612	Carbohydrate transport and metabolism [G]	-0.878401695012039	-2.58547680016032	gpmM
+False	True	False	False	b1886	Cell Motility [N]		-2.44577295637243	tar
+False	True	False	False	b1890	Cell Motility [N]		-2.46684920547176	motA
+False	True	False	False	b1889	Cell Motility [N]		-2.45915743440843	motB
+False	True	False	False	b1888	Cell Motility [N]		-2.57515095137312	cheA
+False	True	False	False	b2343	Function unknown [S]		-2.49967769770023	yfcZ
+False	True	False	False	b1656	Inorganic ion transport and metabolism [P]		-2.48554547447346	sodB
+False	True	False	False	b1905	Inorganic ion transport and metabolism [P]		-2.48424756761506	ftnA
+False	True	False	False	b2927	Carbohydrate transport and metabolism [G]		-2.44958975681824	epd
+False	True	False	False	b2019	Amino acid transport and metabolism [E]	-1.3979583162475	-2.44621447715782	hisG
+False	True	False	False	b1919	Amino acid transport and metabolism [E]		-2.19857063456236	dcyD
+False	True	False	False	b1918	Amino acid transport and metabolism [E]		-2.43414774511768	tcyL
+False	True	False	False	b1194	Cell wall/membrane/envelope biogenesis [M]		-2.35854438980417	ycgR
+False	True	False	True	b0115	Energy production and conversion [C]	-2.63598220270079	-2.13048438237352	aceF
+False	True	False	True	b0113	Transcription [K]	-2.84507540815692	-2.3378748187761	pdhR
+False	True	False	True	b0114	Energy production and conversion [C]	-3.25233170763952	-2.11869365771516	aceE
+False	True	False	False	b2602			-2.32341590829039	yfiL
+False	True	False	False	b1667			-2.22475081105042	ydhR
+False	True	False	False	b0733	Energy production and conversion [C]		-2.19662830075344	cydA
+False	True	False	False	b0734	Energy production and conversion [C]	0.636091004203527	-2.10367374028559	cydB
+False	True	False	False	b0735	Function unknown [S]		-2.21452694723629	ybgE
+False	True	False	False	b3958	Amino acid transport and metabolism [E]		-2.19846843669678	argC
+False	True	False	False	b3666	Carbohydrate transport and metabolism [G]		-2.17055322745924	uhpT
+False	True	False	False	b2007	Function unknown [S]	-1.41601213036604	-2.14736631093777	tmaR
+False	True	False	False	b1474	Energy production and conversion [C]		-2.12607564655984	fdnG
+False	True	False	False	b0833	Signal transduction mechanisms [T]		-2.10314527577537	pdeI
+False	True	False	False	b4476	Carbohydrate transport and metabolism [G]		-2.09450197874605	gntU
+False	True	False	False	b2942	Coenzyme transport and metabolism [H]		-2.07231700307016	metK
+False	True	False	False	b4383	Carbohydrate transport and metabolism [G]	0.878179509135936	-2.06878042414113	deoB
+False	True	False	False	b2369	Signal transduction mechanisms [T]	-1.78309011176262	-2.0485214333931	evgA
+False	True	False	False	b0565	Cell wall/membrane/envelope biogenesis [M]	-1.81464009065568	-2.01784326090298	ompT
+False	True	False	False	K8943_RS03245				
+False	True	False	False	K8943_RS03240				
+False	True	False	False	K8943_RS03260				
+False	True	False	False	K8943_RS03265				
+False	True	False	False	K8943_RS03250				
+False	True	False	False	K8943_RS03255				
+False	True	False	False	K8943_RS03280				
+False	True	False	False	K8943_RS03275				
+False	False	True	False	b0753		2.01770552190301		ybgS
+False	False	True	False	b1283		2.03356390488124		osmB
+False	False	True	False	b2131	Cell wall/membrane/envelope biogenesis [M]	2.04050472540872		osmF
+False	False	True	False	b4411	Function unknown [S]	2.04653687722028		ecnB
+False	False	True	False	b3494		2.05714820325247		uspB
+False	False	True	False	b1784	Function unknown [S]	2.05751857219777		yeaH
+False	False	True	False	b0553	Cell wall/membrane/envelope biogenesis [M]	2.06767734924085		nmpC
+False	False	True	False	b1814	Amino acid transport and metabolism [E]	2.07234075831465		sdaA
+False	False	True	False	b4554		2.09728042245154		yibT
+False	False	True	False	b0400	Signal transduction mechanisms [T]	2.12150040374922		phoR
+False	False	True	False	b2137	Lipid transport and metabolism [I]	2.12556370960761		yohF
+False	False	True	False	b3362		2.12725893901234		yhfG
+False	False	True	False	b1195	Function unknown [S]	2.12912724163743		ymgE
+False	False	True	False	b1646	Inorganic ion transport and metabolism [P]	2.13254812953083		sodC
+False	False	True	False	b0389		2.14243036153726		yaiA
+False	False	True	False	b2426	Lipid transport and metabolism [I]	2.14318178511366	1.53389848353394	ucpA
+False	False	True	False	b2665	Function unknown [S]	2.15055570725215		kbp
+False	False	True	False	b4107	Function unknown [S]	2.15965074886821		yjdN
+False	False	True	False	b0953	Translation, ribosomal structure and biogenesis [J]	2.17137339683333	1.94804263368221	rmf
+False	False	True	False	b0384		2.17198610496909		psiF
+False	False	True	False	b0898		2.18478959522456		ycaD
+False	False	True	False	b1000	Posttranslational modification, protein turnover, chaperones [O]	2.20356248092915		cbpA
+False	False	True	False	b4187	Lipid transport and metabolism [I]	2.20801725650022		aidB
+False	False	True	False	b4217		2.21217293628751		ytfK
+False	False	True	False	b3517	Amino acid transport and metabolism [E]	2.24530193011732	1.5592416835386	gadA
+False	False	True	False	b4582	Inorganic ion transport and metabolism [P]	2.24702452203573	-1.4327181736302	yoeA
+False	False	True	False	b0435	Signal transduction mechanisms [T]	2.24898348167338		bolA
+False	False	True	False	b4498	Transcription [K]	2.26614249072115		gatR
+False	False	True	False	b2537	Transcription [K]	2.27219461980257		hcaR
+False	False	True	False	b1489	Signal transduction mechanisms [T]	2.13066787126341		dosP
+False	False	True	False	b1490	Signal transduction mechanisms [T]	2.27938385525334		dosC
+False	False	True	False	b2340	Signal transduction mechanisms [T]	2.31021258471237	1.50475585344425	sixA
+False	False	True	False	b2799	Energy production and conversion [C]	2.31648299188035		fucO
+False	False	True	False	b3418	Transcription [K]	2.33182805653365	1.88574300787629	malT
+False	False	True	False	b2008	Function unknown [S]	2.3730854601122		yeeA
+False	False	True	False	b1376	Signal transduction mechanisms [T]	2.37806083396592	1.07863334519772	uspF
+False	False	True	False	b1156		2.37905875939503		tfaE
+False	False	True	False	b3892	Energy production and conversion [C]	2.38105746540037	1.02124496873711	fdoI
+False	False	True	False	b0269	Amino acid transport and metabolism [E]	2.38215904644228		yagF
+False	False	True	False	b4153	Energy production and conversion [C]	2.14159709751253	-1.40617535299139	frdB
+False	False	True	False	b4154	Energy production and conversion [C]	2.38522765312544	-1.44867191896259	frdA
+False	False	True	False	b0346	Transcription [K]	2.38880419622212		mhpR
+False	False	True	False	b3544	Amino acid transport and metabolism [E]	2.40234965326911	1.59746758672014	dppA
+False	False	True	False	b3543	Amino acid transport and metabolism [E]	2.18302268190061	1.62632803823065	dppB
+False	False	True	False	b0307	Energy production and conversion [C]	2.40716163044324		ykgF
+False	False	True	False	b1953		2.41144541342591		yodD
+False	False	True	False	b4305	Carbohydrate transport and metabolism [G]	2.41205164363433		sgcX
+False	False	True	False	b4304	Carbohydrate transport and metabolism [G]	2.31084089742028		sgcC
+False	False	True	False	b1955	General function prediction only [R]	2.42911996991064		yedP
+False	False	True	False	b2647	Cell wall/membrane/envelope biogenesis [M]	2.43063095629121		ypjA
+False	False	True	False	b3565	Carbohydrate transport and metabolism [G]	2.47359717453029	1.73066331501213	xylA
+False	False	True	False	b3128	Carbohydrate transport and metabolism [G]	2.47689463261047		garD
+False	False	True	False	b1536	Function unknown [S]	2.48199505663597		ydeI
+False	False	True	False	b2009	Replication, recombination and repair [L]	2.50973136057194		sbmC
+False	False	True	False	b0964	Function unknown [S]	2.58486992233671		yccT
+False	False	True	False	b1648	General function prediction only [R]	2.66020097211308		ydhL
+False	False	True	False	b4620		2.67518432038982		yjbT
+False	False	True	False	b3452	Carbohydrate transport and metabolism [G]	2.68525744437598		ugpA
+False	False	True	False	b4598		2.69418770746148		yncL
+False	False	True	False	b4061	Signal transduction mechanisms [T]	2.69652290422901		pdeC
+False	False	True	False	b3021	Transcription [K]	2.70063974246693		mqsA
+False	False	True	False	b2253	Cell wall/membrane/envelope biogenesis [M]	2.71408150571752	-0.731778792831794	arnB
+False	False	True	False	b0966	Function unknown [S]	2.7230858181874		hspQ
+False	False	True	False	b1002		2.75543013564433	1.39795627070715	agp
+False	False	True	False	b2135		2.77104086733676		yohC
+False	False	True	False	b0304	Energy production and conversion [C]	2.79426943908855		rclA
+False	False	True	False	b1469	Inorganic ion transport and metabolism [P]	2.82206731224892		narU
+False	False	True	False	b1467	Energy production and conversion [C]	2.57228005764813		narY
+False	False	True	False	b1815	Signal transduction mechanisms [T]	2.87021391205034		pdeD
+False	False	True	False	b1537	General function prediction only [R]	2.87573451033457		ydeJ
+False	False	True	False	b0806		2.87903235057018		mcbA
+False	False	True	False	b1967	General function prediction only [R]	2.88320667928896		hchA
+False	False	True	False	b0456	Function unknown [S]	2.89620458914423		ybaA
+False	False	True	False	b1431		2.90077616884427	1.14842476816165	ydcL
+False	False	True	False	b0842	Carbohydrate transport and metabolism [G]	3.01669692430067		mdfA
+False	False	True	False	b1259	General function prediction only [R]	3.03440364018692		yciG
+False	False	True	False	b4302	Carbohydrate transport and metabolism [G]	3.0419468499777		sgcA
+False	False	True	False	b2323	Lipid transport and metabolism [I]	3.11872311058668		fabB
+False	False	True	False	b3348	Function unknown [S]	3.12832978964828		slyX
+False	False	True	False	b2080	Function unknown [S]	3.12976066474167		yegP
+False	False	True	False	b0836		3.30855402264489	1.48507582780614	bssR
+False	False	True	False	b3049		3.35888394545497		glgS
+False	False	True	False	b4550	Function unknown [S]	3.40351131483621		arfA
+False	False	True	False	b0443	General function prediction only [R]	3.41147135099443		fadM
+False	False	True	False	b3421	Function unknown [S]	3.41847310081841		rtcB
+False	False	True	False	b2125	Transcription [K]	3.42965092651821	1.76794055284301	btsR
+False	False	True	False	b1519	General function prediction only [R]	3.44927133938806		tam
+False	False	True	False	b1060		3.46142616893437		bssS
+False	False	True	False	b3600	Carbohydrate transport and metabolism [G]	2.84139981879321		mtlD
+False	False	True	False	b3599	Carbohydrate transport and metabolism [G]	3.46731516436357	1.53009806413687	mtlA
+False	False	True	False	b1038		3.56175087987894		csgF
+False	False	True	False	b1039		3.07399937825003		csgE
+False	False	True	False	b1420		3.62201685759651		mokB
+False	False	True	False	b4428		2.55932960662256		hokB
+False	False	True	False	b2662	Amino acid transport and metabolism [E]	2.53680311812427	1.69564824519084	gabT
+False	False	True	False	b2661	Energy production and conversion [C]	2.33404834625327	1.81856826185884	gabD
+False	False	True	False	b2664	Transcription [K]	2.50595323147926		glaR
+False	False	True	False	b1810		3.66116197910369		yoaC
+False	False	True	False	b4033	Carbohydrate transport and metabolism [G]	3.6783327066229	1.65804597517216	malF
+False	False	True	False	b2877	General function prediction only [R]	3.75018107379573		mocA
+False	False	True	False	b2899	General function prediction only [R]	3.84541768475696	-1.15277223623488	yqfA
+False	False	True	False	b1205		3.88185243335771	1.59625070411963	ychH
+False	False	True	False	b1042		3.89118619023355		csgA
+False	False	True	False	b2408		3.95045568411973		yfeN
+False	False	True	False	b2240	Carbohydrate transport and metabolism [G]	3.98881810973001		glpT
+False	False	True	False	b2239	Energy production and conversion [C]	2.72843508228475		glpQ
+False	False	True	False	b4231	Carbohydrate transport and metabolism [G]	2.50633134911		yjfF
+False	False	True	False	b0329		4.21570641101766		yahO
+False	False	True	False	b2094	Carbohydrate transport and metabolism [G]	3.82480094768145		gatA
+False	False	True	False	b2093	Carbohydrate transport and metabolism [G]	4.40299606792846		gatB
+False	False	True	False	b2095	Carbohydrate transport and metabolism [G]	3.98441323743557		gatZ
+False	False	True	False	b2096	Carbohydrate transport and metabolism [G]	4.07297595888234		gatY
+False	False	True	False	b2241	Energy production and conversion [C]	3.93543880102499		glpA
+False	False	True	False	b2243	Energy production and conversion [C]	4.46305418930834		glpC
+False	False	True	False	b2242	Amino acid transport and metabolism [E]	4.30383469691966		glpB
+False	False	True	False	b3926	Energy production and conversion [C]	4.5300632346394	1.74639051826285	glpK
+False	False	True	False	b3925	Carbohydrate transport and metabolism [G]	3.10481376586285		glpX
+False	False	True	False	b1487	Amino acid transport and metabolism [E]	3.01502186193829		ddpA
+False	False	True	False	b1488	Cell wall/membrane/envelope biogenesis [M]	4.70619123211212		ddpX
+False	False	True	False	b1486	Amino acid transport and metabolism [E]	3.75458425898212		ddpB
+False	False	True	False	b1485	Amino acid transport and metabolism [E]	3.52605165312034		ddpC
+False	False	True	False	b1511	Carbohydrate transport and metabolism [G]	4.8332808038844		lsrK
+False	False	True	False	b1512	Transcription [K]	4.0329007765772		lsrR
+False	False	True	False	b2091	Amino acid transport and metabolism [E]	5.19974104210516		gatD
+False	False	True	False	b3884	Transcription [K]	3.66211759121489		csqR
+False	False	True	False	b3883	Carbohydrate transport and metabolism [G]	5.29571740073528		yihV
+False	False	True	False	b3709	Amino acid transport and metabolism [E]	3.5439110707332		tnaB
+False	False	True	False	b4239	Carbohydrate transport and metabolism [G]	5.67490207922102		treC
+False	False	True	False	b1441	Amino acid transport and metabolism [E]	4.57888761569061		ydcT
+False	False	True	False	b4279	Carbohydrate transport and metabolism [G]	5.87425917336267		nanX
+False	False	True	False	b3875		7.28873934186533		ompL
+False	False	True	False	b1514	Carbohydrate transport and metabolism [G]	8.55618496158375		lsrC
+False	False	True	False	b1518	Function unknown [S]	5.00648975777714		lsrG
+False	False	True	False	b1513	Carbohydrate transport and metabolism [G]	6.575506111524		lsrA
+False	False	True	False	b1517	Carbohydrate transport and metabolism [G]	6.4400534024479		lsrF
+False	False	True	False	b1515	Carbohydrate transport and metabolism [G]	6.03146556110263		lsrD
+False	False	True	False	b1516	Carbohydrate transport and metabolism [G]	6.8128809124874		lsrB
+False	False	True	False	b3876	Carbohydrate transport and metabolism [G]	7.88515947006248		yihO
+False	False	True	False	b3880	Carbohydrate transport and metabolism [G]	7.89060130914977		yihS
+False	False	True	False	b3878	Carbohydrate transport and metabolism [G]	8.00722436274405		yihQ
+False	False	True	False	b3882	Lipid transport and metabolism [I]	8.84471544979268		yihU
+False	False	True	False	b3877	Carbohydrate transport and metabolism [G]	9.23469984703145		yihP
+False	False	True	False	b3881	Carbohydrate transport and metabolism [G]	9.73573889395546		yihT
+False	False	True	False	b3879	Carbohydrate transport and metabolism [G]	10.1434289789509		yihR
+False	False	True	False	b4831		3.7165116465425		allZ
+False	False	True	False	b4834		3.46002738938289		xylZ
+False	False	True	False	b4459		3.35733967448877		ryjA
+False	False	True	False	b4805		2.98870741858367		raiZ
+False	False	True	False	b4446		2.78686251413677		sibC
+False	False	True	False	b4418		2.59512319605923		sraB
+False	False	False	True	b1264	Amino acid transport and metabolism [E]	-7.29131215369846		trpE
+False	False	False	True	b1262	Amino acid transport and metabolism [E]	-4.92824939665402		trpC
+False	False	False	True	b1263	Amino acid transport and metabolism [E]	-5.78778075895192		trpD
+False	False	False	True	b1261	Amino acid transport and metabolism [E]	-6.40096398718032		trpB
+False	False	False	True	b1260	Amino acid transport and metabolism [E]	-6.117763594967		trpA
+False	False	False	True	b3769	Function unknown [S]	-6.11516046440493		ilvM
+False	False	False	True	b3771	Amino acid transport and metabolism [E]	-3.53983437245393	-1.74365528354112	ilvD
+False	False	False	True	b3772	Amino acid transport and metabolism [E]	-2.81491014775746	-1.81422533035082	ilvA
+False	False	False	True	b3770	Amino acid transport and metabolism [E]	-4.50093709408988	-1.81948964246861	ilvE
+False	False	False	True	b0774	Coenzyme transport and metabolism [H]	-4.53167916213442		bioA
+False	False	False	True	b2210	General function prediction only [R]	-4.43221830464153		mqo
+False	False	False	True	b3671	Amino acid transport and metabolism [E]	-4.22505548354605	1.37412398119823	ilvB
+False	False	False	True	b3670	Amino acid transport and metabolism [E]	-4.07847317632		ilvN
+False	False	False	True	b3668	Signal transduction mechanisms [T]	-3.76710897823064		uhpB
+False	False	False	True	b3669	Signal transduction mechanisms [T]	-3.74868338273985		uhpA
+False	False	False	True	b0775	Coenzyme transport and metabolism [H]	-3.75473491371787		bioB
+False	False	False	True	b0777	Secondary metabolites biosynthesis, transport and catabolism [Q]	-3.23137727923508		bioC
+False	False	False	True	b0776	Coenzyme transport and metabolism [H]	-3.23516354823118		bioF
+False	False	False	True	b4060		-3.52074699155396		yjcB
+False	False	False	True	b3662	Carbohydrate transport and metabolism [G]	-3.33386267617537		nepI
+False	False	False	True	b2683		-3.31456737331996		ygaH
+False	False	False	True	b4244	Nucleotide transport and metabolism [F]	-3.28405250266899		pyrI
+False	False	False	True	b0429	Energy production and conversion [C]	-2.46975320847998	1.68668093806744	cyoD
+False	False	False	True	b0431	Energy production and conversion [C]	-2.5463647309009	1.9617982443579	cyoB
+False	False	False	True	b0430	Energy production and conversion [C]	-2.99691945317708	1.6591022251261	cyoC
+False	False	False	True	b4111	Carbohydrate transport and metabolism [G]	-2.92222956091308	-1.91794724784335	proP
+False	False	False	True	b3267	General function prediction only [R]	-2.91699285962192		yhdV
+False	False	False	True	b2175	Cell wall/membrane/envelope biogenesis [M]	-2.87750957486823	1.90948289956802	mepS
+False	False	False	True	b2103	Coenzyme transport and metabolism [H]	-2.21625694039987	-1.69853981183908	thiD
+False	False	False	True	b2104	Coenzyme transport and metabolism [H]	-2.84133205504293	-1.92141110732237	thiM
+False	False	False	True	b3870	Amino acid transport and metabolism [E]	-2.81169022074673	0.707926503301063	glnA
+False	False	False	True	b0002	Amino acid transport and metabolism [E]	-2.75449405590527	-0.945630984965334	thrA
+False	False	False	True	b1868	Function unknown [S]	-2.73382743709957		yecE
+False	False	False	True	b1867	Secondary metabolites biosynthesis, transport and catabolism [Q]	-2.30717923247559		yecD
+False	False	False	True	b0990	Transcription [K]	-2.700083090536	-1.39653600936866	cspG
+False	False	False	True	b4723		-2.38841193165653	-1.88484013641045	ymcF
+False	False	False	True	b4516	Replication, recombination and repair [L]	-2.67703556540202		insA4
+False	False	False	True	b4024	Amino acid transport and metabolism [E]	-2.6322366927182	-1.3729991022713	lysC
+False	False	False	True	b4317	Cell Motility [N]	-2.4844580938313		fimD
+False	False	False	True	b4319	Cell Motility [N]	-2.62064382615266		fimG
+False	False	False	True	b4318	Cell Motility [N]	-2.20409720833965		fimF
+False	False	False	True	b2943	Carbohydrate transport and metabolism [G]	-2.57038950894506	-1.3205627213573	galP
+False	False	False	True	b0801	Energy production and conversion [C]	-2.55394899115815	-1.6059367753492	hcxB
+False	False	False	True	b4484	Intracellular trafficking, secretion, and vesicular transport [U]	-2.45313826797156		cpxP
+False	False	False	True	b2291	General function prediction only [R]	-2.42673824561395		yfbR
+False	False	False	True	b1452	Function unknown [S]	-2.3504018969917		yncE
+False	False	False	True	b2551	Amino acid transport and metabolism [E]	-2.33958503270294		glyA
+False	False	False	True	b1110	Function unknown [S]	-2.33257521999338		ycfJ
+False	False	False	True	b3827	Carbohydrate transport and metabolism [G]	-2.33088053899681		bioP
+False	False	False	True	b1324	Posttranslational modification, protein turnover, chaperones [O]	-2.30059501530492	-0.56903014018209	tpx
+False	False	False	True	b2155	Inorganic ion transport and metabolism [P]	-2.28133807801579		cirA
+False	False	False	True	b1447	Function unknown [S]	-2.27251039252224		ydcZ
+False	False	False	True	b2215	Cell wall/membrane/envelope biogenesis [M]	-2.25216869067634	-1.0257288170872	ompC
+False	False	False	True	b1840	Inorganic ion transport and metabolism [P]	-2.21615947753531	-1.31785796959103	yebZ
+False	False	False	True	b2827	Nucleotide transport and metabolism [F]	-2.1507751460557		thyA
+False	False	False	True	b3161	Amino acid transport and metabolism [E]	-2.14929857048717		mtr
+False	False	False	True	b0434	Cell wall/membrane/envelope biogenesis [M]	-2.11889712121115		yajG
+False	False	False	True	b0033	Amino acid transport and metabolism [E]	-2.10434043687351	1.40670200634937	carB
+False	False	False	True	b1199	Carbohydrate transport and metabolism [G]	-2.08933965721064		dhaL
+False	False	False	True	b2527	Posttranslational modification, protein turnover, chaperones [O]	-2.06268824470498		hscB
+False	False	False	True	b1418	Energy production and conversion [C]	-2.04592302904986		cybB
+False	False	False	True	b1430	Secondary metabolites biosynthesis, transport and catabolism [Q]	-2.03432618351774		tehB
+False	False	False	True	b0632	Cell wall/membrane/envelope biogenesis [M]	-2.02529814331997		dacA

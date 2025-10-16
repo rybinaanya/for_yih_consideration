@@ -1,0 +1,453 @@
+---
+title: "gseKegg"
+output: html_document
+date: "2024-09-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load libraries 
+```{r}
+require("pathview")
+require("clusterProfiler")
+require("KEGGREST")
+require("DOSE")
+require('glue')
+```
+
+# Import data and specify cutoff for log2FoldChange
+```{r}
+res <- read.csv('UpSet_data_Nissle_vs_K12.csv',
+                sep="\t")
+
+# Set a cutoff for log2FoldChange
+L2FC_cutoff <- 2
+
+setwd('/Users/a1234/Desktop/for_yih_considerationDraft/Diff_expr/')
+head(res, 3)
+```
+
+
+# Gene expression heatmap of top-enriched KEGG pathways in *E. coli* K12
+
+```{r}
+#### =================  Enriched pathways for K12 strain  ================= #####
+df_k12 <- res  %>% filter( abs(L2FC_K12) > L2FC_cutoff) 
+
+# create a vector of the gene unuiverse
+kegg_gene_list_k12 <- df_k12$L2FC_K12 
+
+# name vector with ENTREZ ids
+names(kegg_gene_list_k12) <- df_k12$id
+
+
+# Create a vector of the gene unuiverse
+kegg_gene_list_k122 <- df_k12$L2FC_K12 
+
+# Name vector with ENTREZ ids
+names(kegg_gene_list_k122) <- df_k12$gene
+
+# omit any NA values 
+kegg_gene_list_k12 <-na.omit(kegg_gene_list_k12)
+
+# sort the list in decreasing order (required for clusterProfiler)
+kegg_gene_list_k12 = sort(kegg_gene_list_k12, decreasing = TRUE)
+
+# run gseKEGG
+kk2 <- gseKEGG(geneList     = kegg_gene_list_k12,
+               organism     = 'eco',
+               eps=0,
+              # nPerm        = 10000,
+               minGSSize    = 2,
+               maxGSSize    = 800,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = "BH",
+               keyType       = "kegg")
+
+
+# create a mapping of ENTREZ IDs to gene symbols
+gene_mapping <- df_k12 %>% dplyr::select(., id, gene) %>% na.omit()
+
+# modify the `kk_kegg` object to update geneIDs with gene symbols
+kk2@result$core_enrichment <- sapply(kk2@result$core_enrichment, function(gene_ids) {
+  ids <- unlist(strsplit(gene_ids, "/"))  # split the geneIDs by '/'
+  symbols <- gene_mapping$gene[match(ids, gene_mapping$id)]  # map to gene symbols
+  
+  paste(symbols, collapse="/")  # recombine as a string
+})
+
+# extract the results from kk2
+kegg_results <- kk2@result
+
+# remove "Escherichia coli K12 MG1655" from the Description column
+kegg_results$Description <- gsub("- Escherichia coli K-12 MG1655", "", kegg_results$Description)
+
+# update the kk2 object with the modified descriptions
+kk2@result <- kegg_results
+
+
+# specify number of categories that will be present in the heatplot
+# (gseKEGG is apparently sorted by padj value by default) 
+showCat_Number=9
+
+# sort by enrichmetn score
+kegg_results <- kegg_results[order(kegg_results$enrichmentScore, decreasing = TRUE), ]
+
+# Extract gene symbols for top enriched categories
+genes_split <- kegg_results$core_enrichment %>% 
+  head(showCat_Number) %>% 
+  as.character() %>% 
+  strsplit(.,"/|,|;") %>% 
+  unlist() %>% 
+  unique() %>% 
+  trimws() %>% sort(., decreasing=TRUE)
+
+# split subset of genes into halves
+half_point <- ceiling(length(genes_split) / 2)
+genes_part1 <- genes_split[1:half_point]
+genes_part2 <- genes_split[(half_point + 1):length(genes_split)]
+fc1 <- kegg_gene_list_k122[names(kegg_gene_list_k122) %in% genes_part1]
+fc2 <- kegg_gene_list_k122[names(kegg_gene_list_k122) %in% genes_part2]
+
+# find min and max expression values
+min1 <- min(fc1) 
+max1 <- max(fc1)
+min2 <- min(fc2)
+max2 <- max(fc2)
+shared_min <- min(c(min1, min2)) -1
+shared_max <- max(c(max1, max2))
+
+# subset gseKEGG ouptut 
+kk2_part1 <- kk2  # make a copy
+
+# Keep only  pathways where at least 50% of genes are in genes_part
+kk2_part1@result <- kk2@result[
+  sapply(strsplit(as.character(kk2@result$core_enrichment), "/"), function(g) {
+    g <- trimws(g)
+    overlap <- sum(g %in% genes_part1)
+    ratio <- overlap / length(g)
+    ratio >= 0.6  #  set to 0.3, 0.8 etc. as needed
+  }),
+]
+
+kk2_part1@result <- kk2_part1@result[order(kk2_part1@result$enrichmentScore, decreasing = TRUE), ]
+
+# same for the part2
+kk2_part2 <- kk2  # make a copy
+
+# keep only keep pathways where at least 50% of genes are in genes_part
+kk2_part2@result <-kk2@result[
+  sapply(strsplit(as.character(kk2@result$core_enrichment), "/"), function(g) {
+    g <- trimws(g)
+    overlap <- sum(g %in% genes_part2)
+    ratio <- overlap / length(g)
+    ratio >= 0.6  #  set to 0.3, 0.8 etc. as needed
+  }),
+]
+
+kk2_part2@result <- kk2_part2@result[order(kk2_part2@result$enrichmentScore, decreasing = TRUE), ]
+
+
+#======= PLOT PART 1 ========#
+heatplot(kk2_part1, foldChange = kegg_gene_list_k122, showCategory = showCat_Number) +
+  # ggtitle(expression("" * italic("E. coli") * " K12")) +
+  theme(
+    text = element_text(size = 100, family = "Arial"),  
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 90, face = "italic"),  
+    axis.text.y = element_text(size = 90),  
+    # axis.title = element_text(size = 80),  
+    plot.title = element_text(size = 60, hjust = 0.5),  
+    legend.text = element_text(size = 80),  
+    legend.title = element_text(size = 80, margin = margin(b = 40)),  
+    legend.position = c(0.84, 0.91), # "none",  # bottom-left corner (x, y in 0-1 scale)
+    # legend.position = "none", # "none",  # bottom-left corner (x, y in 0-1 scale)
+    legend.key.width = unit(6, "cm"),  # wider color bar
+    legend.key.height = unit(2, "cm"),  # taller color bar
+    legend.spacing.x = unit(2, "cm"),  # extra horizontal space in legend
+    plot.margin = unit(c(1, 1, 1, 1), "cm")  
+  ) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white" , #'grey',
+    high = 'orange',
+    midpoint = 0,
+    name = "Log2FoldChange",  
+    # breaks = seq(-4, 4, by = 1), 
+    # breaks = seq(min1, max2, by = 4),  # fewer breaks (every 2 units instead of 1)
+   breaks = c(shared_min, 0, shared_max),
+labels = c(round(shared_min), "0", round(shared_max)),
+limits = c(shared_min, shared_max)
+    
+  )
+
+# save with large dimensions
+ggsave(
+  "heatmap_k12_p1_rev.jpg",
+  width = 78,
+  height = 18,
+  units = "in",
+  dpi = 400,
+  limitsize = FALSE,
+  bg = "white"
+)
+
+
+#======= PLOT PART 2 ========#
+heatplot(kk2_part2, foldChange = kegg_gene_list_k122, showCategory = showCat_Number) +
+  # ggtitle(expression("" * italic("E. coli") * " K12")) +
+  theme(
+    text = element_text(size = 100, family = "Arial"),  
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 90, face = "italic"),  
+    axis.text.y = element_text(size = 90),  
+    axis.title = element_text(size = 70),  
+    # plot.title = element_text(size = 60, hjust = 0.5),  
+    legend.text = element_text(size = 80),  
+    legend.title = element_text(size = 80, margin = margin(b = 40)),  
+    # legend.position = c(0.15, 0.9),  # bottom-left corner (x, y in 0-1 scale)
+    # legend.position = c(0.9, 0.9),  # bottom-left corner (x, y in 0-1 scale)
+    # legend.spacing.y = unit(6, "cm"),  
+    legend.position = "none",
+    # legend.key.width = unit(6, "cm"),  # wider color bar
+    # legend.key.height = unit(2, "cm"),  # taller color bar
+    # legend.spacing.x = unit(2, "cm"),  # extra horizontal space in legend
+    plot.margin = unit(c(1, 1, 1, 1), "cm")  
+  ) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white", #'grey',
+    high = 'orange',
+    midpoint = 0,
+    # name = "Log2FoldChange",  
+    # breaks = seq(-4, 4, by = 1), 
+    # breaks = seq(min1, max2, by = 4),  # fewer breaks (every 2 units instead of 1)
+  breaks = c(shared_min, 0, shared_max),
+labels = c(round(shared_min), "0", round(shared_max)),
+limits = c(shared_min, shared_max)
+    
+  )
+
+# save with large dimensions
+ggsave(
+  "heatmap_k12_p2_rev.jpg",
+  width = 78,
+  height = 30,
+  units = "in",
+  dpi = 400,
+  limitsize = FALSE,
+  bg = "white"
+)
+
+```
+
+
+
+# Gene expression heatmap of top-enriched KEGG pathways in *E. coli* Nissle 1917
+```{r}
+#### ============ Enriched pathways for Nissle strain  =============== #####
+
+# get the data frame with pathway–gene mappings
+df_nissle <- res %>%  filter( abs(L2FC_Nissle) > L2FC_cutoff)  #%>% 
+  #dplyr::select(., id, L2FC_Nissle) 
+
+# create a vector of the gene unuiverse
+kegg_gene_list_nissle <- df_nissle$L2FC_Nissle 
+
+# name vector with ENTREZ ids
+names(kegg_gene_list_nissle) <- df_nissle$id
+
+# create a vector of the gene unuiverse
+kegg_gene_list_nissle2 <- df_nissle$L2FC_Nissle
+
+# name vector with ENTREZ ids
+names(kegg_gene_list_nissle2) <- df_nissle$gene
+
+# omit any NA values 
+kegg_gene_list_nissle<-na.omit(kegg_gene_list_nissle)
+
+# sort the list in decreasing order (required for clusterProfiler)
+kegg_gene_list_nissle = sort(kegg_gene_list_nissle, decreasing = TRUE)
+
+kk2 <- gseKEGG(geneList     = kegg_gene_list_nissle,
+               organism     = 'eco',
+              # nPerm        = 10000,
+               eps=0,
+              # nPerm        = 10000,
+               minGSSize    = 2,
+               maxGSSize    = 800,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = "BH",
+               keyType       = "kegg")
+
+# save dataframe before modifying it
+# write.csv(kk2@result,"gseKEGG_nissle.csv",sep='\t', row.names = FALSE)
+
+# create a mapping of ENTREZ IDs to gene symbols
+gene_mapping <- df_nissle %>% dplyr::select(., id, gene) %>% na.omit()
+
+# modify the `kk_kegg` object to update geneIDs with gene symbols
+kk2@result$core_enrichment <- sapply(kk2@result$core_enrichment, function(gene_ids) {
+  ids <- unlist(strsplit(gene_ids, "/"))  # split the geneIDs by '/'
+  symbols <- gene_mapping$gene[match(ids, gene_mapping$id)]  # map to gene symbols
+  
+  paste(symbols, collapse="/")  # Recombine as a string
+})
+
+# extract the results from kk2
+kegg_results <- kk2@result
+
+# remove "Escherichia coli K12 MG1655" from the Description column
+kegg_results$Description <- gsub("- Escherichia coli K-12 MG1655", "", kegg_results$Description)
+
+# update the kk2 object with the modified descriptions
+kk2@result <- kegg_results
+
+# specify number of categories that will be present in the heatplot
+# gseKEGG is apparently sorted by padj value by default 
+showCat_Number=7
+
+# extract gene symbols for top enriched categories
+genes_split <- kegg_results$core_enrichment %>% 
+  # dplyr::select(., core_enrichment) %>% 
+  head(showCat_Number) %>% 
+  as.character() %>% 
+  strsplit(.,"/|,|;") %>% 
+  unlist() %>% 
+  unique() %>% 
+  trimws() %>% sort(., decreasing=TRUE)
+# split subset of genes into halves
+half_point <- ceiling(length(genes_split) / 2)
+genes_part1 <- genes_split[1:half_point]
+genes_part2 <- genes_split[(half_point + 1):length(genes_split)]
+fc1 <- kegg_gene_list_nissle2[names(kegg_gene_list_nissle2) %in% genes_part1]
+fc2 <- kegg_gene_list_nissle2[names(kegg_gene_list_nissle2) %in% genes_part2]
+
+# == To have the same color scaling as for K-12, keep the lines below commented
+# min1 <- min(fc1) 
+# max1 <- max(fc1)
+# min2 <- min(fc2)
+# max2 <- max(fc2)
+# 
+# shared_min <- min(c(min1, min2))
+# shared_max <- max(c(max1, max2))
+
+# subset gseKEGG ouptut 
+kk2_part1 <- kk2  # make a copy
+
+# keep rows where core_enrichment has any gene from the gene list
+# kk2_part1@result <-  kk2@result[
+#   sapply(strsplit(as.character(kk2@result$core_enrichment), "/"),
+#          function(g) any(g %in% genes_part1)), ]
+
+kk2_part1@result$core_enrichment <- sapply(kk2_part1@result$core_enrichment, function(gene_ids) {
+  ids <- unlist(strsplit(gene_ids, "/"))
+  filtered_ids <- ids[ids %in% genes_part1]
+  paste(filtered_ids, collapse = "/")
+})
+
+
+# same for the part2
+kk2_part2 <- kk2  # make a copy
+# kk2_part2@result <- kk2@result[
+#   sapply(strsplit(as.character(kk2@result$core_enrichment), "/"),
+#          function(g) any(g %in% genes_part2)), ]
+kk2_part2@result$core_enrichment <- sapply(kk2_part2@result$core_enrichment, function(gene_ids) {
+  ids <- unlist(strsplit(gene_ids, "/"))
+  filtered_ids <- ids[ids %in% genes_part2]
+  paste(filtered_ids, collapse = "/")
+})
+
+
+#======= PLOT PART 1 =======#
+heatplot(kk2_part1, foldChange = kegg_gene_list_nissle2, showCategory = showCat_Number) +
+  # ggtitle(expression("" * italic("E. coli") * " Nissle 1917")) +
+  theme(
+    text = element_text(size = 100, family = "Arial"),  
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 90, face = "italic"),  
+    axis.text.y = element_text(size = 90),  
+    # axis.title = element_text(size = 80),  
+    plot.title = element_text(size = 60, hjust = 0.5),  
+    legend.position = "none", # "none
+    # legend.text = element_text(size = 80),  
+    # legend.title = element_text(size = 80, margin = margin(b = 40)),  
+    # legend.position = c(0.09, 0.9), # "none",  # bottom-left corner (x, y in 0-1 scale)
+    legend.key.width = unit(6, "cm"),  # wider color bar
+    legend.key.height = unit(2, "cm"),  # taller color bar
+    legend.spacing.x = unit(2, "cm"),  # extra horizontal space in legend
+    plot.margin = unit(c(1, 1, 1, 1), "cm")  
+  ) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = 'white', #'grey',
+    high = 'orange',
+    midpoint = 0,
+    name = "Log2FoldChange",  
+    # breaks = seq(-4, 4, by = 1), 
+    # breaks = seq(min1, max2, by = 4),  # fewer breaks (every 2 units instead of 1)
+   breaks = c(shared_min, 0, shared_max),
+labels = c(round(shared_min), "0", round(shared_max)),
+limits = c(shared_min, shared_max)
+  )
+
+# save with large dimensions
+ggsave(
+  "heatmap_nissle_p2_rev.jpg",
+  # width = 100, 
+  # height = 35,
+  width = 78, 
+  height = 18,
+  units = "in",
+  dpi = 400,
+  limitsize = FALSE,
+  bg = "white"
+)
+
+#======= PLOT PART 1 =======#
+heatplot(kk2_part2, foldChange = kegg_gene_list_nissle2, showCategory = showCat_Number) +
+  # ggtitle(expression("" * italic("E. coli") * " Nissle 1917")) +
+  theme(
+    text = element_text(size = 100, family = "Arial"),  
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 90, face = "italic"),  
+    axis.text.y = element_text(size = 90),  
+    axis.title = element_text(size = 70),  
+    # plot.title = element_text(size = 60, hjust = 0.5),  
+    legend.text = element_text(size = 80),  
+    legend.title = element_text(size = 80, margin = margin(b = 40)),  
+    #legend.position = c(0.15, 0.9),  # bottom-left corner (x, y in 0-1 scale)
+    legend.position = c(0.9, 0.9),  # bottom-left corner (x, y in 0-1 scale)
+    # legend.spacing.y = unit(6, "cm"),  
+    legend.key.width = unit(6, "cm"),  # wider color bar
+    legend.key.height = unit(2, "cm"),  # taller color bar
+    legend.spacing.x = unit(2, "cm"),  # extra horizontal space in legend
+    plot.margin = unit(c(1, 1, 1, 1), "cm")  
+  ) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = 'white', #'grey',
+    high = 'orange',
+    midpoint = 0,
+    name = "Log2FoldChange",  
+    # breaks = seq(-4, 4, by = 1), 
+    # breaks = seq(min1, max2, by = 4),  # fewer breaks (every 2 units instead of 1)
+   breaks = c(shared_min, 0, shared_max),
+labels = c(round(shared_min), "0", round(shared_max)),
+limits = c(shared_min, shared_max)
+    
+  )
+
+# save with large dimensions
+ggsave(
+  "heatmap_nissle_p1_rev.jpg",
+  # width = 100, 
+  # height = 35,
+  width = 78, 
+  height = 25,
+  units = "in",
+  dpi = 400,
+  limitsize = FALSE,
+  bg = "white"
+)
+```
+
+

@@ -1,0 +1,295 @@
+---
+title: "Plot qRT-PCR results and growth curves"
+output: html_document
+date: "2024-09-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1. Load libraries
+```{r}
+require(dplyr)
+require(ggplot2)
+require(ggbreak) 
+require(patchwork)
+require(ggtext)
+require(latex2exp)
+require(extrafont)
+require(plyr)
+```
+
+# 2. Generate qRT-PCR plot
+## 2.0. Create a function
+```{r}
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE), 
+      se = sd(x[[col]], na.rm=TRUE) / sqrt(length(x[[col]])))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  # data_sum <- rename(data_sum, c("mean" = varname))
+  names(data_sum)[names(data_sum) == "mean"] <- varname
+  return(data_sum)
+}
+```
+
+## 2.1. Prepare data
+```{r}
+gluc_file <- 'qrt_pcr_extended.txt' 
+k12_nissle_file <- 'qrt_pcr_2**ddCT.tsv'
+
+k12_nissle <- read.csv(k12_nissle_file, sep='\t')
+gluc_data <- read.csv(gluc_file, sep='\t')
+
+common_columns=c('gene', 'sugar', 'strain', 'X2..ddCt')
+
+df <- rbind(
+  subset(k12_nissle, select = common_columns) %>% dplyr::filter(sugar!='gluc'), 
+  subset(gluc_data, select = common_columns) %>% dplyr::filter(sugar=='G') %>% 
+    mutate(sugar = gsub("G", "gluc", sugar),     # Replace 'G' with 'gluc' in the 'sugar' column
+         strain = gsub("K12", "wt", strain)) 
+)
+
+mock_data <- data.frame(
+  gene = c("yihS", "yihS", "yihR", "yihR", "yihP", "yihP", "yihQ", "yihQ"),
+  sugar = c("gluc", "SQ", "gluc", "SQ", "gluc", "SQ", "gluc", "SQ"),
+  strain = c("Nissle", "Nissle", "Nissle", "Nissle", "Nissle", "Nissle", "Nissle", "Nissle"),
+  X2..ddCt = rep(0, 8),  # Expression set to zero
+  se = rep(0, 8), sd = rep(0, 8)  # Standard error set to zero for the mock data
+) %>% 
+
+  mutate(sugar_strain = paste(sugar, strain, sep = "_"))
+
+df <- data_summary(df, varname="X2..ddCt", 
+                    groupnames=c("sugar", "strain", 'gene'))
+
+df <- df %>%
+  filter(sugar != "lac") %>%
+   filter(gene != "lacZ") %>%
+  filter(gene != "crp") %>% filter(gene != "hns") %>% filter(!is.na(expression)) %>% 
+
+  mutate(sugar_strain = paste(sugar, strain, sep = "_")) ##%>%
+  # group_by(gene, sugar, strain) %>%  # Group by gene, sugar, and strain
+  # mutate(se = ifelse(n() > 1, sd(expression, na.rm = TRUE) / sqrt(n()), 0)) %>%  # Calculate SE if more than one observation
+  # ungroup() %>%  # Ungroup after calculating SE
+  # filter(!is.na(expression))  # Remove rows with missing X2..ddCt
+
+df <- rbind(df, mock_data)
+
+df <- df %>%
+  mutate(gene = paste0("*", gene, "*"))  # Wrap gene names in italics markdown
+
+df$se[is.na(df$se)] <- 0
+
+```
+
+
+## 2.2. Create a figure
+```{r}
+# Define fill colors for each sugar_strain combination
+fill_colors <- c(
+  'gluc_wt' = 'grey80',    # Glucose K12 - light gray
+  'gluc_Nissle' = 'black', # Glucose Nissle - medium gray
+  'SQ_wt' = '#66CDAA',   # SQ K12 - dark gray
+  'SQ_Nissle' = '#008080'  # SQ Nissle - black
+)
+
+# Define labels for the legend
+fill_labels <- c(
+  'gluc_wt' = "D-glucose (K-12 MG1655)", 
+  'gluc_Nissle' = "D-glucose (Nissle 1917)", 
+  'SQ_wt' = "SQ (K-12 MG1655)", 
+  'SQ_Nissle' = "SQ (Nissle 1917)"
+)
+
+
+# Load Arial font (make sure it's installed on your system)
+loadfonts(quiet = TRUE)
+# Load Arial font
+loadfonts(quiet = TRUE)
+
+# Run ggplot
+p <- ggplot(df, aes(x = gene, 
+                             y = X2..ddCt, 
+                             fill = sugar_strain)) + 
+  geom_bar(stat = "identity", 
+           color = "black", 
+           position = position_dodge(width = 0.9)) +
+  geom_errorbar(aes(ymin = X2..ddCt - se, ymax = X2..ddCt + se),
+                width = 0.3, color='black',
+                position = position_dodge(width = 0.9)) +
+  scale_fill_manual("Condition", 
+                    values = fill_colors,
+                    labels = fill_labels) +
+  theme(
+    text = element_text(family = "Arial", color = "black"),
+    strip.text.y = element_text(angle = 0, 
+                                 face = "italic", 
+                                 size = 24, 
+                                 colour = 'black'),
+    strip.background.y = element_rect(fill = 'white'),
+    axis.text.x = element_text(size = 24, color = "black"),
+    axis.text.y = element_markdown(size = 24, colour = 'black'), # Requires ggtext
+    axis.title.x = element_text(size = 24, color = "black"),
+    axis.title.y = element_text(size = 24, color = "black"),
+    
+legend.position = c(0.95, 0.95),
+    legend.justification = c("right", "top"),
+
+    legend.text = element_text(size = 22, color = "black"),
+    legend.title = element_text(size = 22),
+    panel.background = element_rect(fill = 'white'),
+    panel.grid.major = element_line(colour = "grey80"),
+    panel.border = element_rect(linetype = "dashed", 
+                                fill = NA, 
+                                colour = "grey80")
+  ) +
+  coord_flip() +
+  scale_y_break(c(15, 60), 
+               scales = 'free',
+               space = 0.3, 
+               # ticklabels = c(50, 150, 300, 400, 500, 600, 700, 800, 900, 1000)
+               ) +
+  labs(x = NULL, y = bquote("Relative fold gene expression, "~2**{Delta*Delta*C[t]})) # +
+  # scale_y_continuous(position = 'left')
+
+```
+
+## 2.3. Save a figure as JPG
+```{r}
+# Save as high-quality JPEG
+ggsave("qRT_PCR.jpg", plot = p,
+       width = 12, height = 8, units = "in",
+       dpi = 600, device = "jpeg")
+```
+
+
+
+
+# 3. Plot growth curves 
+## 3.0. Create a function for calculating confidence intervals 
+```{r}
+# function to calculate mean and confidence intervals
+calculate_ci <- function(data, ci_level = 0.95) {
+  data %>%
+    group_by(hours, sugar, strain) %>%
+    dplyr::summarise(
+      mean_OD600 = mean(OD600, na.rm = TRUE),
+      sd_OD600 = sd(OD600, na.rm = TRUE),
+      n = dplyr::n(),  # number of observations
+      error = qt(ci_level / 2 + 0.5, df = n - 1) * sd_OD600 / sqrt(n)  # confidence interval
+    )
+}
+```
+
+## 3.1. Prepare data
+```{r}
+# import data
+growth_file <- 'growth_curves.tsv'
+df_growth <-  read.csv(growth_file, sep='\t')
+
+# create a combined factor for sugar and strain
+df_growth <- df_growth %>%
+  filter(sugar != "lac") %>%
+  filter(!is.na(OD600)) %>% 
+  mutate(sugar_strain = paste(sugar, strain, sep = "_"))
+
+# ensure that OD600 is treated as a character first, to apply gsub(), and then convert it back to numeric
+df_growth$OD600 <- as.numeric(gsub(",", ".", df_growth$OD600))
+
+# create new rows for hours = 0, OD600 = 0 for each combination of sugar and strain
+new_data <- df_growth %>%
+  dplyr::select(sugar, strain) %>%
+  distinct() %>%  # Get unique combinations of sugar and strain
+  mutate(hours = 0, OD600 = 0)  # Add time 0 with OD600 = 0
+
+# check if any columns are missing in new_data that are present in df_growth
+missing_columns <- setdiff(names(df_growth), names(new_data))
+
+# add missing columns to new_data (except 'sugar_strain' which is created later)
+new_data[missing_columns] <- NA
+df_growth <- rbind(df_growth, new_data)
+
+# calculate confidence intervals
+df_growth_ci <- calculate_ci(df_growth)
+
+df_growth_ci <- df_growth_ci %>%
+  mutate(sugar_strain = paste(sugar, strain, sep = "_"))
+```
+
+
+## 3.2. Generate a fogure with growth curves
+```{r}
+# define colors for the curves
+fill_colors <- c(
+  'gluc_wt' = 'grey80',    # Glucose K12 - light gray
+  'gluc_Nissle' = 'black', # Glucose Nissle - medium gray
+  'SQ_wt' = '#66CDAA',   # SQ K12 - dark gray
+  'SQ_Nissle' = '#008080'  # SQ Nissle - black
+) 
+
+# define labels for the legend
+fill_labels <- c(
+  'gluc_wt' = "D-glucose (K-12 MG1655)", 
+  'gluc_Nissle' = "D-glucose (Nissle 1917)", 
+  'SQ_wt' = "SQ (K-12 MG1655)", 
+  'SQ_Nissle' = "SQ (Nissle 1917)"
+)
+
+# plot the growth curves with error bars
+g <- ggplot(df_growth_ci, aes(x = hours, y = mean_OD600, color = sugar_strain, group = sugar_strain)) +
+  geom_line(size = 1.5) +  # Line size
+  geom_point(size = 4) +   # Point size
+  geom_errorbar(aes(ymin = mean_OD600 - error, ymax = mean_OD600 + error, color = sugar_strain),
+                width = 0.2, size = 1) +  # Error bars
+  # geom_ribbon(aes(ymin = mean_OD600 - error, ymax = mean_OD600 + error, fill = sugar_strain),
+  #               alpha=0.3) +  # Error bars
+  scale_color_manual(values = fill_colors, labels=fill_labels) +  # custom color palette
+  theme_minimal() +  # clean theme
+  labs(
+    x = "Time, hours", 
+    y = expression(OD[600]),  # Y-axis label with subscript
+    color = "Condition"
+  ) +
+  # theme(
+  #   text = element_text(family = "Avenir", size = 19),  # Font and size
+  #   axis.text.x = element_text(size = 19),  # X-axis tick size
+  #   axis.text.y = element_text(size = 19),  # Y-axis tick size
+  #   axis.title.x = element_text(size = 25, margin = margin(t = 20)),  # X-axis label size and padding
+  #   axis.title.y = element_text(size = 30, margin = margin(r = 20)),  # Y-axis label size and padding
+  #   legend.text = element_text(size = 20),  # Legend text size
+  #   legend.position = "right"  # Legend position
+  # ) +
+  
+  theme(
+  text = element_text(family = "Arial", size = 22, color = "black"),  # base text
+  axis.text.x = element_text(size = 22, color = "black"),             # X-tick labels
+  axis.text.y = element_text(size = 22, color = "black"),             # Y-tick labels
+  axis.title.x = element_text(size = 28, margin = margin(t = 20), color = "black"),  # X-title
+  axis.title.y = element_text(size = 28, margin = margin(r = 20), color = "black"),  # Y-title
+  legend.text = element_text(size = 22, color = "black"),             # legend labels
+  legend.title = element_text(size = 24, color = "black"),            # legend title
+  legend.position = "right",                                          # legend location
+  plot.title = element_text(size = 28, face = "bold", color = "black"),
+  panel.grid.major = element_line(color = "grey80"),
+  panel.grid.minor = element_blank(),
+  panel.background = element_rect(fill = "white", color = NA)
+) +
+
+  scale_x_continuous(limits = c(0, NA)) +  # set X-axis limits (start at 0)
+  scale_y_continuous(limits = c(0, NA))    # set Y-axis limits (start at 0)
+```
+
+
+## 3.3. Save a figure as JPG
+```{r}
+ggsave("growth_curves.jpg", plot = g,
+       width = 13, height = 7,
+       units = "in", dpi = 800)
+```
