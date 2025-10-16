@@ -6,9 +6,9 @@ currently under review at *International Journal of Molecular Sciences*.
 
 It includes a minimal set of scripts used to:
 
-- process RNA-seq data (trimming, mapping, quantification),
-- perform differential expression analysis (DESeq2, clusterProfiler),
-- and annotate the phylogenetic distribution of *yih* cassette variants across *E. coli* strains.
+- annotate the phylogenetic distribution of *yih* cassette variants across *E. coli* strains (`phylogeny/` folder)
+- process RNA-seq data (trimming, mapping, quantification) (`RNA_seq/` folder),
+- and perform differential expression analysis (DESeq2, clusterProfiler, etc) (`Diff_expr/` folder).
 
 ## Data availability
 
