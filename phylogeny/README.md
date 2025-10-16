@@ -5,6 +5,7 @@ This folder contains basic scripts to annotate the phylogenetic distribution of 
 * `get_yih_loci_data.ipynb` analyzes the genomic organization and colocalization of _yih_ locus genes in different _E. coli_ strains; the script takes  `yih_genes_mmseq.tsv` as input and generates output with locus composition and genomic coordinates: `yih_homologs_loci.csv` and `target2info_data_altToGFFs.csv`
 * `get_itol_files.ipynb` generates iTOL (Interactive Tree Of Life) annotation files for visualizing _yih_ operon genomic data on phylogenetic tree of _E. coli_ strains from ShigellaProject; the script creates two types of iTOL annotation files: domain annotation file (`Ecoli.domains.txt`) that visualizes genomic organization of _yih_ loci, and binary presence/absence gile (`yih_loci_presence.txt`) that visualizes gene content patterns across strains
 * `run_Fisher_test.ipynb` performs statistical analysis to test the association between _yih_ locus variants and bacterial pathogenicity using Fisher's Exact Test.
+* `get_Fig1.ipynb` generates `Figure 1` that shows position of _yih_ loci relative to universal single-copy orthologous groups from ShigellaProject (Seferbekova et al. 2021)
 
 
 **Input data**:
@@ -13,6 +14,7 @@ This folder contains basic scripts to annotate the phylogenetic distribution of 
 * `clusters.txt` - Phylogroup coloring for the tree from ShigellaProject (Seferbekova et al. 2021)
 * `labels.txt` - Organism names for tree nodes from ShigellaProject (Seferbekova et al. 2021)
 * `total_stats.csv` - Strain statistics and metadata from ShigellaProject (Seferbekova et al. 2021)
+* `E_coli_K12_locus_data.csv` and `E_coli_NIssle_locus_data.csv` - metadata with genomic coordinates for generating `Figure 1`  with the `get_Fig1.ipynb` script
 
 **Analysis outputs**:
 * `yih_genes_mmseq.tsv` - MMseqs2 homology results (from `run_mmseqs2.py`)
