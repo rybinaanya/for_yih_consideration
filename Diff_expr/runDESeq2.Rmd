@@ -1,0 +1,674 @@
+---
+title: "DESeq2 analysis"
+#output: html_document
+author: "Anna Rybina"
+output:
+  html_document: #default
+    toc: true
+    #theme: united
+    toc_depth: 5
+    toc_float: true
+    #number_section: true
+#editor_options:
+  chunk_output_type: console
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 0. Prerequisites: installation and import of libraries
+
+The current work requires the following packages (R version: 3.6.3):
+
+```{r message=FALSE, warning = FALSE}
+require('ggplot2')
+require('DESeq2')
+require('enrichplot')
+require('dplyr')
+require('clusterProfiler')
+require('DOSE')
+require('cowplot')
+require('tidyr')
+require('reshape2')
+require('ggpubr')
+require('pheatmap')
+require('ggrepel')
+require('org.EcK12.eg.db')
+require('latex2exp')
+require('Polychrome')
+require('stringr')
+#require(raster)
+require('RColorBrewer')
+require('glue')
+#library(magrittr)
+require("purrr")
+require('pathview')
+require('rstudioapi')
+```
+
+
+## 1. Specify functions and some variables for downstream steps 
+
+#### 0. Set output and main (input) directory, for example, to a directory where the current script is located
+```{r}
+# get the location of the scipt
+script_path <- getActiveDocumentContext()$path
+script_dir <- dirname(script_path)
+mainDir <- script_dir
+outDir <- script_dir
+```
+
+#### 1. Combine feature counts output with the gff annotation data:
+```{r message=FALSE, warning = FALSE}
+combine_featureCount_GFF_data<- function(featureCounts_file, gff_file){
+   # Import feature counts data
+
+    message('Importing feature counts data')
+    featureCounts_data <- read.csv(featureCounts_file, 
+                                   sep="\t",  
+                                   #row.names='Geneid',
+                                   comment.char = "#")
+
+    # Rename Geneid column to locus_tag column
+    featureCounts_data <- dplyr::rename(featureCounts_data, locus_tag = Geneid)
+
+    # Import GFF annotation file
+    message('Importing GFF annotation file ')
+    gff <- read.csv(gff_file, sep="\t", comment.char = "#", header=F)
+
+    # Set column names
+    colnames(gff) <- paste0('V', c(1:9))
+
+    # Extract product names, locus_tags, and IDs 
+    # from the last column in annotation
+    # remove exon rows to avoid duplication in data
+    message('Getting product names and IDs from the GFF annotation')
+    gff <- gff %>%
+      filter(str_detect(V9, "product=") & 
+               str_detect(V9, "locus_tag=") & 
+               (!str_detect(V3, "exon"))) %>% 
+      mutate(product = str_split_fixed(V9, "product=", 2)[,2] %>% 
+               gsub( ';.+$', '', .) %>% 
+               gsub( '%2C', ',', .) %>%
+               gsub( '%3B', ';', .), 
+             locus_tag = str_split_fixed(V9, "locus_tag=", 2)[,2] %>% 
+               gsub( ';.+$', '', .),
+             ID=str_split_fixed(V9, "ID=", 2)[,2] %>% 
+               gsub( ';.+$', '', .))  
+
+    # merge feature counts and gff data by locus_tag column 
+    message('Merging feature counts and annotation data')
+    featureCounts_gff <- merge(featureCounts_data, 
+                               gff[!duplicated(gff$locus_tag),], 
+                               by = "locus_tag",
+                               all = T)
+
+    # select  columns from the feature counts part, 
+    # product and ID columns from the GFF part 
+    featureCounts_gff<- featureCounts_gff %>% dplyr::select(c(1:14,24,25))
+
+    # replace missing values in gene with ID
+    
+    featureCounts_gff %>% mutate(., gene = ifelse(!is.na(gene), gene, 'ID'))
+    
+    # replace misssing product name with pseudogene
+    featureCounts_gff <- featureCounts_gff %>% 
+      mutate(product=ifelse(is.na(product) | product=='' | product=='NA', 
+                            'pseudogene', product)) 
+    
+    # remove duplicated rows 
+    featureCounts_gff <- featureCounts_gff[!duplicated(featureCounts_gff), ]
+
+    # make locus_tag as row names 
+    row.names(featureCounts_gff) <- featureCounts_gff$locus_tag
+    message('Done')
+    return(featureCounts_gff)
+}
+```
+
+
+#### 2. Construct the DESeqDataSet object based on count matrix, add gene/ID and product names as metadata, and filter out rows which count sum is less than 10:
+```{r}
+construct_DESeqDataSet <- function(featureCounts_gff){
+    ## Create a count matrix
+    message('Creating count matrix')
+    # select only columns containing counts
+    counts_df <- featureCounts_gff[str_detect(colnames(featureCounts_gff), 
+                                              '.bam')]
+    # Get condition and replicate info from names of SAM files 
+    # used as input for feature counts
+    colnames(counts_df) <- as.vector(sapply(strsplit(colnames(counts_df),'_'), 
+                                            "[", 6 ))
+    counts_mtx <- as.matrix(counts_df)
+
+    ## Create The DESeqDataSet object from count matrix
+    message('Constructing the DESeqDataSet object')
+    # construct data frame on conditions
+    # rows of colData should correspond to columns of countData
+    coldata<-data.frame(row.names=colnames(counts_mtx),
+                        condition=factor(gsub('.{1}$', '', 
+                                              colnames(counts_df))))
+    dds <- DESeqDataSetFromMatrix(countData = counts_mtx,
+                                  colData = coldata,
+                                  design = ~ condition)
+    
+    ## Add metadata to DESeqDataSet
+    message('Adding metadata (gene/ID and product names) to DESeqDataSet')
+    featureData <- data.frame(geneID_product=paste(featureCounts_gff$gene, 
+                                                   featureCounts_gff$product, 
+                                                   sep=', '),
+                              product=featureCounts_gff$product,
+                              geneID = featureCounts_gff$gene,
+                              locus_tag=featureCounts_gff$locus_tag)
+    mcols(dds) <- DataFrame(mcols(dds), featureData)
+    
+    ## Pre-filter
+    message('Filtering low count data')
+    keep <- rowSums(counts(dds)) >= 10
+    dds <- dds[keep,]
+    
+    message('Done')
+    return(dds)
+}
+```
+
+
+#### 3. Calculate standard differential expression analysis using glucose as a baseline condition:
+```{r}
+compute_DESeq <- function(DESeqDataSet, sugar_control='gluc'){
+    # factor level
+    message(glue("Relevel factors in DESeqDataSet using {sugar_control} as a baseline"))
+    DESeqDataSet$condition <- relevel(DESeqDataSet$condition, 
+                                      ref = sugar_control)
+
+    # standard differential expression analysis 
+    message('Starting differential expression analysis')
+    dds <- DESeq(DESeqDataSet)
+    message('Done!')
+    return(dds)
+}
+```
+#### 4. Get DESeq results (hypothesis testing via the Wald test, add metadata, and reorder results according to log2FoldChange):
+```{r}
+get_DESeq_results <- function(dds, 
+                              sugar_to_compare, 
+                              sugar_control='gluc', 
+                              alpha_threshold=0.05){
+    # Indicate two groups we want to compare 
+    # Hypothesis testing via the Wald test
+    message(glue('Specifying contrasts: compare {sugar_to_compare} conditions to a baseline {sugar_control}'))
+    contrast <- c("condition", sugar_to_compare, sugar_control)
+    message('Hypothesis testing via the Wald test')
+    res <- results(dds, contrast = contrast, alpha = alpha_threshold)
+
+    # Add columns containing gene names
+    message('Adding geneID, locus_tag, and product names to results')
+    res[c('product','geneID','locus_tag')] <- mcols(dds)[row.names(res), c('product','geneID','locus_tag')]
+
+    # Reorder according to log2FoldChange
+    message('Reordering based on log2FoldChange')
+    resOrdered <- res[order(res$log2FoldChange),]
+
+    # Return list of results 
+    message('Done!')
+    return(resOrdered)
+}
+```
+
+
+#### 5. Make volcano plots
+
+Plot volcano plots (log p-value adjusted vs log2FoldChange ), using cutoff values for Log2FoldChange and adjusted p-value. Add geneID for top 20 genes
+```{r}
+plot_volcano <- function(resSig, 
+                         l2fc_cutoff = 2, 
+                         padj_cutoff = 0.05, 
+                         top_number = 20,
+                         xlim_range = NULL,
+                         ylim_range = NULL,
+                         axis_font_size = 15,
+                         label_font_size = 7,
+                         adj_pval_cap=1e-100) {
+
+  options(ggrepel.max.overlaps = Inf)
+  de <- as.data.frame(resSig)
+  
+  # replace values lower than 1e-50 with 1e-50 to avoid compresion of data points
+  de$padj_plot <- pmax(de$padj, adj_pval_cap)
+  
+
+  # Flag DE genes
+  de$diffexpressed <- "NO"
+  de$diffexpressed[de$log2FoldChange > l2fc_cutoff & de$padj < padj_cutoff] <- "UP"
+  de$diffexpressed[de$log2FoldChange < -l2fc_cutoff & de$padj < padj_cutoff] <- "DOWN"
+
+  # Remove gene labels
+  # de$delabel <- NA  # no labels will be plotted
+  # Label top genes
+  de$delabel <- NA
+  top_de <- subset(de[c(1:top_number, (nrow(de) - top_number + 1):nrow(de)), ], diffexpressed != 'NO')
+  top_select <- rownames(top_de)
+  de[top_select, 'delabel'] <- as.vector(de[top_select, 'geneID'])
+
+  # Set X and Y limits if not provided
+  if (is.null(xlim_range)) {
+      x_pos <- round(abs(max(de$log2FoldChange, na.rm = TRUE)) + 1)
+      x_neg <- round(abs(min(de$log2FoldChange, na.rm = TRUE)) + 1)
+      xlim_range <- c(-x_neg, x_pos)
+  }
+
+  if (is.null(ylim_range)) {
+      ylim_range <- c(0, ceiling(max(-log10(de$padj), na.rm = TRUE)) + 1)
+  }
+
+  # # Set X and Y limits if not provided
+  # if (is.null(xlim_range)) {
+  #   x_pos <- round(abs(max(de$log2FoldChange, na.rm = TRUE)) + 1)
+  #   x_neg <- round(abs(min(de$log2FoldChange, na.rm = TRUE)) + 1)
+  #   xlim_range <- c(-x_neg, x_pos)
+  # }
+  # 
+  # if (is.null(ylim_range)) {
+  #   ylim_range <- c(0, ceiling(max(-log10(de$padj), na.rm = TRUE)) + 1)
+  # }
+
+  # Plot
+  p <- ggplot(de, aes(x = log2FoldChange, 
+                      y = -log10(padj_plot), # replace with padj_plot  
+                      color = diffexpressed, 
+                        label = delabel)) +
+    geom_point(alpha = 0.2, size = 5, stroke = 1) +
+    geom_vline(xintercept = c(-l2fc_cutoff, l2fc_cutoff), color = "#CF9FFF") +
+    geom_hline(yintercept = -log10(padj_cutoff), color = "#CF9FFF") +
+    scale_color_manual(values = c("blue", "grey", "orange")) +
+    xlab(expression(log[2]("fold change"))) +
+    ylab(expression(-log[10]("adjusted p-value"))) +
+    scale_x_continuous(limits = xlim_range) +
+    scale_y_continuous(limits = ylim_range) +
+    
+    geom_text_repel(
+      family = "Arial",
+            size = label_font_size,
+      color = "black", # make labels for genes black
+            fontface = "italic",
+            box.padding = unit(0.5, "lines"),
+            point.padding = unit(0.3, "lines"),
+            max.overlaps = Inf,
+      nudge_y = 4, # vertical adjustments 
+      force = 4, #max.overlaps = 15 # Slightly jitter label positions
+        ) +
+    
+    theme_minimal() +
+    # labs(color = "Differentially\nexpressed\ngenes") + # Remove legend
+    theme(
+      text = element_text(family = "Arial", size = axis_font_size, color = "black"),
+      axis.title.x = element_text(size = axis_font_size + 5, margin = margin(t = 10), color = "black"),
+      axis.title.y = element_text(size = axis_font_size + 5, margin = margin(r = 10), color = "black"),
+      axis.text.x = element_text(size = axis_font_size + 5, color = "black"),
+      axis.text.y = element_text(size = axis_font_size + 5, color = "black"),
+      # legend.text = element_text(size = axis_font_size, color = "black"),
+      # legend.title = element_text(size = axis_font_size + 2, color = "black"),
+      legend.position = "none"  # ← this line removes the legend
+    )
+
+  return(p)
+}
+
+
+```
+
+
+## 2. Differential expression analysis for _E. coli_ K-12
+
+### 2.1. Import data
+
+```{r message=FALSE, warning = FALSE}
+strain='K12'
+
+# Combine feature counts data and GFF annotation data 
+message('...Combining feature counts data and GFF annotation data...')
+featureCounts_gff <- combine_featureCount_GFF_data(file.path(mainDir, glue('{strain}_merged')), file.path(mainDir, 'GCF_000005845.2_ASM584v2_genomic.gff'))
+
+# Manually crop one product name for better visualization
+featureCounts_gff[featureCounts_gff$locus_tag %in% list('b3846'), 'product'] <- 'multifunctional enoyl-CoA hydratase'
+
+# Construct DESeqDataSet from count data
+message('...Constructing DESeqDataSet from count data...')
+dds <- construct_DESeqDataSet(featureCounts_gff)
+
+# make the DeSeqDataSet
+message('...Computing DESeq...')
+dds <- compute_DESeq(dds)
+
+```
+
+
+### 2.2. Quality control
+#### Pseudo counts distribution
+
+```{r}
+raw_counts <- counts(dds) %>% as.data.frame(.)
+pseudoCount = log2(raw_counts + 1)
+
+as.data.frame(pseudoCount) [1:4]%>%
+pivot_longer(everything())%>% 
+ggplot(aes(value, fill=value)) +  ylab(expression(log[2](count + 1))) + 
+geom_histogram(colour = "white", fill = "#525252", binwidth = 0.4) +
+scale_fill_manual(values = c('black',  'palegreen')) +
+facet_wrap(vars(name), nrow=3, ncol=2) + theme_bw()
+```
+
+
+```{r message=FALSE, warning = FALSE}
+df = melt(pseudoCount[1:4])
+df = data.frame(df, Condition = gsub('.{1}$', '', df$variable))
+ggplot(df, aes(x = Condition, y = value, fill = Condition)) + 
+  geom_boxplot() + 
+  xlab("") + 
+  ylab(expression(log[2](count + 1))) + 
+  scale_fill_manual(values = c('black',  'palegreen')) +
+  theme_bw()
+```
+
+#### Data quality assessment by sample clustering and visualization
+##### PCA
+
+```{r message=FALSE, warning = FALSE}
+### Transform counts for data visualization
+rld <- rlog(dds, blind=TRUE)
+### Plot PCA 
+pcaData <- plotPCA(rld, intgroup="condition" ,  returnData=TRUE) 
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData[1:4,], aes(PC1, PC2, color=condition)) +
+  geom_point(size=5, aes(color=condition), alpha = 0.7) + 
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+scale_colour_manual(values = c('grey20',  'palegreen'),
+                    labels=c('gluc'='D-glucose','SQ'='SQ' )) +
+   labs(
+    color = "Condition"
+  ) +
+  theme_bw()+
+  theme(text = element_text(family = "Avenir"),
+        axis.title.x = element_text(size = 15, 
+                                    margin = margin(t = 10)),  # X-axis label size and padding
+    axis.title.y = element_text(size = 15, margin = margin(r = 10)),  # Y-axis label size and padding
+        legend.text = element_text(size = 15),
+    legend.title = element_text(size = 15)
+        ) 
+
+ggsave(paste0(outDir,'/', "QC_PCA_k12.jpg"),
+       dpi = 500)  
+
+```
+
+##### Hierarchical Clustering
+
+```{r}
+### Extract the rlog matrix from the object
+rld_mat <- assay(rld)    ## assay() is function from the "SummarizedExperiment" package that was loaded when you loaded DESeq2
+
+## Compute pairwise correlation values
+rld_cor <- cor(rld_mat)    ## cor() is a base R function
+
+head(rld_cor)   ## check the output of cor(), make note of the rownames and colnames
+
+### Plot heatmap
+p1 <- pheatmap(rld_cor[1:4, 1:4]) + theme_bw()+
+  theme(text = element_text(family = "Avenir"),
+        axis.title.x = element_text(size = 15, 
+                                    margin = margin(t = 10)),  # X-axis label size and padding
+    axis.title.y = element_text(size = 15, margin = margin(r = 10)),  # Y-axis label size and padding
+        legend.text = element_text(size = 15),
+    legend.title = element_text(size = 15)
+        ) 
+
+
+ggsave(paste0(outDir, '/', "QC_heatmap_k12.jpg"), plot=p1,
+       dpi = 500) 
+```
+
+### 2.3. Get DESeq2 results
+
+```{r message=FALSE, warning = FALSE}
+dir.create(file.path(outDir, 'DESeq_output'), showWarnings = FALSE)
+setwd(file.path(outDir, 'DESeq_output'))
+
+# sugars_to_compare <- c('SQ', 'lac')
+sugars_to_compare <- c('SQ')
+
+for (sugar in sugars_to_compare){
+    # Get results using contrasts
+    message('...Getting results using contrasts...')
+    assign(glue("res_{sugar}"), get_DESeq_results(dds, sugar_to_compare = sugar))
+    # Write to file
+    message(glue('...Writing to results to {strain}_{sugar}_vs_gluc_results_all.csv...'))
+    write.table(as.data.frame(get(glue("res_{sugar}"))), 
+                file=file.path(outDir, 'DESeq_output', glue('{strain}_{sugar}_vs_gluc_results_all.csv')),
+                sep='\t', quote = F)
+    message('Done')
+    # Select Significant results based on padj
+    message('...Selecting significant results based on padj...')
+    assign(glue("resSig_{sugar}"), subset(get(glue("res_{sugar}")), padj < 0.05))
+    # Write to file
+    message(glue('...Writing to results to {strain}_{sugar}_vs_gluc_results_padj0.05.csv...'))
+    write.table(as.data.frame(get(glue("resSig_{sugar}"))), 
+                file=file.path(outDir, 'DESeq_output', glue('{strain}_{sugar}_vs_gluc_results_padj0.05.csv')),
+                sep='\t', quote = F)
+    message('Done')
+}
+
+```
+
+
+### 2.4. Volcano plots
+
+```{r warning = FALSE}
+sugars_to_compare <- c('SQ')
+
+for (sugar in sugars_to_compare){
+    setwd(file.path(outDir, 'DESeq_output'))
+    png(glue("Volcano_{strain}_{sugar}_LFC2.jpg"), 
+        units="in", width=20, height=12, res=800)
+    
+      plot(plot_volcano(
+    get(glue("resSig_{sugar}")),
+    l2fc_cutoff = 2,
+    padj_cutoff = 0.05,
+    top_number = 10,
+    xlim_range = c(-10, 13),           # custom X-axis range
+    ylim_range = c(0, 110),           # custom Y-axis range
+    axis_font_size = 40,            # bigger axis label text
+    label_font_size = 15             # bigger gene label text
+  ))
+    dev.off()
+}
+```
+
+
+## 3. Differential expression analysis for _E. coli_ Nissle 1917
+
+### 3.1. Import data
+
+```{r message=FALSE, warning = FALSE}
+strain='Nissle'
+
+# Combine feature counts data and GFF annotation data 
+message('...Combining feature counts data and GFF annotation data...')
+featureCounts_gff <- combine_featureCount_GFF_data(file.path(mainDir, glue('{strain}_merged')), file.path(mainDir, 'GCF_019967895.1_ASM1996789v1_genomic.gff'))
+
+# Construct DESeqDataSet from count data
+message('...Constructing DESeqDataSet from count data...')
+dds <- construct_DESeqDataSet(featureCounts_gff)
+
+# make the DeSeqDataSet
+message('...Computing DESeq...')
+dds <- compute_DESeq(dds)
+
+```
+
+
+### 3.2. Quality control
+
+#### Pseudo counts distribution
+
+```{r}
+raw_counts <- counts(dds) %>% as.data.frame(.)
+pseudoCount = log2(raw_counts + 1)
+
+as.data.frame(pseudoCount)%>%
+pivot_longer(everything())%>%
+ggplot(aes(value, fill=value)) +  ylab(expression(log[2](count + 1))) +
+geom_histogram(colour = "white", fill = "#525252", binwidth = 0.4) +
+scale_fill_manual(values = c('blue', 'red', 'burlywood')) +
+facet_wrap(vars(name), nrow=3, ncol=2) + theme_bw()
+```
+
+
+```{r message=FALSE, warning = FALSE}
+df = melt(pseudoCount)
+df = data.frame(df, Condition = gsub('.{1}$', '', df$variable))
+ggplot(df, aes(x = Condition, y = value, fill = Condition)) +
+  geom_boxplot() +
+  xlab("") +
+  ylab(expression(log[2](count + 1))) +
+  scale_fill_manual(values = c('blue', 'red', 'burlywood')) +
+  theme_bw()
+```
+
+#### Data quality assessment by sample clustering and visualization
+##### PCA
+
+```{r message=FALSE, warning = FALSE}
+### Transform counts for data visualization
+rld <- rlog(dds, blind=TRUE)
+
+pcaData <- plotPCA(rld, intgroup="condition" ,  returnData=TRUE) 
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData[1:4,], aes(PC1, PC2, color=condition)) +
+  geom_point(size=5, aes(color=condition), alpha = 0.7) + 
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+scale_colour_manual(values = c('grey20',  '#008080'),
+                    labels=c('gluc'='D-glucose (Nissle 1917)','SQ'='SQ (Nissle 1917)' )) +
+   labs(
+    color = "Condition"
+  ) +
+  theme_bw()+
+  theme(text = element_text(family = "Arial"),
+        axis.title.x = element_text(size = 15, 
+                                    margin = margin(t = 10)),  # X-axis label size and padding
+    axis.title.y = element_text(size = 15, margin = margin(r = 10)),  # Y-axis label size and padding
+        legend.text = element_text(size = 15),
+    legend.title = element_text(size = 15)
+        ) 
+
+ggsave(paste0(outDir,'/', "QC_PCA_nissle.jpg"),
+       dpi = 500)  
+
+```
+
+##### Hierarchical Clustering
+
+```{r}
+# Extract the rlog matrix from the object
+rld_mat <- assay(rld)    ## assay() is function from the "SummarizedExperiment" package that was loaded when you loaded DESeq2
+
+# Compute pairwise correlation values
+rld_cor <- cor(rld_mat)    ## cor() is a base R function
+
+# head(rld_cor)   ## check the output of cor(), make note of the rownames and colnames
+
+### Plot heatmap)
+p1 <- pheatmap(rld_cor[1:4, 1:4]) + theme_bw()+
+  theme(text = element_text(family = "Avenir"),
+        axis.title.x = element_text(size = 15, 
+                                    margin = margin(t = 10)),  # X-axis label size and padding
+    axis.title.y = element_text(size = 15, margin = margin(r = 10)),  # Y-axis label size and padding
+        legend.text = element_text(size = 15),
+    legend.title = element_text(size = 15)
+        ) 
+ggsave(paste0(outDir, '/', "QC_heatmap_nissle.jpg"), plot=p1, dpi = 500)  
+```
+
+### 3.3. Get DESeq2 results
+
+```{r message=FALSE, warning = FALSE}
+dir.create(file.path(outDir, 'DESeq_output'), showWarnings = FALSE)
+setwd(file.path(outDir, 'DESeq_output'))
+
+sugars_to_compare <- c('SQ')
+for (sugar in sugars_to_compare){
+    # Get results using contrasts
+    message('...Getting results using contrasts...')
+    assign(glue("res_{sugar}"), get_DESeq_results(dds, sugar_to_compare = sugar))
+    # Write to file
+    message(glue('...Writing to results to {strain}_{sugar}_vs_gluc_results_all.csv...'))
+    write.table(as.data.frame(get(glue("res_{sugar}"))), 
+                file=file.path(outDir, 'DESeq_output', glue('{strain}_{sugar}_vs_gluc_results_all.csv')),
+                sep='\t', quote = F)
+    message('Done')
+    # Select Significant results based on padj
+    message('...Selecting significant results based on padj...')
+    assign(glue("resSig_{sugar}"), subset(get(glue("res_{sugar}")), padj < 0.05))
+    # Write to file
+    message(glue('...Writing to results to {strain}_{sugar}_vs_gluc_results_padj0.05.csv...'))
+    write.table(as.data.frame(get(glue("resSig_{sugar}"))), 
+                file=file.path(outDir, 'DESeq_output', glue('{strain}_{sugar}_vs_gluc_results_padj0.05.csv')),
+                sep='\t', quote = F)
+    message('Done')
+}
+
+```
+
+
+### 3.4. Volcano plots
+
+Cutoff value for log2FoldChange = 2
+```{r warning = FALSE, fig.show='hide'}
+# ==== Prepare mapping  ======= #
+# import combined dataframe that we can use for mapping locus_tag to geneID and fill NAs
+nissle_gff_file <- paste0(outDir,'/', 'Nissle_SQ_vs_gluc_results_padj0.05_DAVID_operonMapper_extended.tsv')
+gff_nissle <- read.csv(nissle_gff_file, 
+                            sep='\t', 
+                            comment.char = "#",
+                            header=F)
+
+#gff_nissle$V2, 
+map_locusTag2geneID <- c(gff_nissle$V3)
+map_locusTag2geneID <- set_names(map_locusTag2geneID, gff_nissle$V2
+          )
+
+#  protein_tree$tip.label <- proteins2labels[protein_tree$tip.label]
+resSig_SQ$geneID <- map_locusTag2geneID[resSig_SQ$locus_tag]
+
+
+# ==== Violin plot ======= #
+sugars_to_compare <- c('SQ')
+for (sugar in sugars_to_compare){
+    setwd(file.path(outDir, 'DESeq_output'))
+    png(glue("Volcano_{strain}_{sugar}_LFC2.jpg"), 
+        units="in", width=20, height=13, res=800)
+    
+      plot(plot_volcano(
+    get(glue("resSig_{sugar}")),
+    l2fc_cutoff = 2,
+    padj_cutoff = 0.05,
+    top_number = 10,
+    xlim_range = c(-10, 13),           # custom X-axis range
+    ylim_range = c(0, 110),           # custom Y-axis range
+    axis_font_size = 40,            # bigger axis label text
+    label_font_size = 15             # bigger gene label text
+  ))
+    dev.off()
+}
+```
+
+
+
+
+
+
