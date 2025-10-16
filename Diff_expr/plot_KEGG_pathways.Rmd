@@ -1,0 +1,251 @@
+---
+title: "Visualization of KEGG pathways maps"
+#output: html_document
+date: "2025-08-22"
+author: "Anna Rybina"
+output:
+  html_document: #default
+    toc: true
+    #theme: united
+    toc_depth: 5
+    toc_float: true
+    #number_section: true
+#editor_options:
+  #chunk_output_type: console
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## 0. Import libraries
+
+The current work requires the following packages (R version: 4.2.2):
+
+```{r message=FALSE, warning = FALSE}
+require("pathview")
+require("clusterProfiler")
+require("KEGGREST")
+require("DOSE")
+require('glue')
+```
+
+
+## 1. Specify functions and variables 
+
+Function to iterate over pathway IDs of enrichKEGG output and visualize expression patterns on respective pathway maps
+```{r}
+get_kegg_plots <- function(x){
+  
+    # select locus -- LFC data related to specific pathway x
+    geneList_selected <- geneList %>% filter(row.names(.) %in% kk_kegg@geneSets[[x]])
+
+    # gene.data is a data.frame where locus_tags are row.names and L2FC are values
+    # kk_kegg is output of enrichKEGG funciton; 
+    # kk_kegg contains locus-tags of eco (E. coli K12) 
+    # therefore gene.idtype = kegg
+    pathview(gene.data = geneList,  
+             gene.idtype='kegg',
+            pathway.id = kk_kegg@result$ID[x], 
+            out.suffix = glue('{strain}_{sugar}'),
+            low = 'blue', 
+            mid = 'grey', 
+            high = 'orange',
+            species = "eco", 
+            kegg.native = T, same.layer = F,
+    limit =list(
+      gene=max(abs(geneList_selected)), cpd=1), dpi=800
+    )
+}
+```
+
+
+Function below is to convert locus-tags of a model organism from the KEGG database to entrez ids. 
+
+Locus-tags of model organisms from KEGG database are called KEGG IDs in the KEGGREST package, and specified as 'kegg' gene.idtype in the pathview package. 
+
+ENTREZ Geneids are specified as 'ncbi-geneid' in the KEGGREST and clusterProfiler packages, and as 'ENTREZID' in the DOSE package.
+
+```{r}
+map_eco_locusTags2entrezID <- function(model_locus_tags, 
+                                       org_kegg_id='eco'){
+  keggIDs <- model_locus_tags %>% 
+    lapply(., function (x){paste0(glue("{org_kegg_id}:"), x)}) %>% 
+    unlist() %>% 
+    as.vector()
+  keggID2entrezID_mapping <- keggConv("ncbi-geneid", keggIDs)
+  entrezID <- keggID2entrezID_mapping %>% lapply(., function (y){str_split_fixed(y, 'ncbi-geneid:', 2)[,2]}) %>% unlist() %>% unname()
+  return(entrezID)
+
+}
+
+# #### example
+# # entrezIDs <- map_eco_locusTags2entrezID(row.names(geneList))
+# 
+# ## enrichment
+# kk_entrez <- enrichKEGG(gene = entrezIDs,
+#                           organism ='eco',
+#                           pvalueCutoff  = 0.01,
+#                           qvalueCutoff  = 0.05,
+#                       keyType='ncbi-geneid')
+# 
+# ## does not support eco kegg IDs, need to deal with entrez IDs
+# kk_symbols <- setReadable(kk_entrez, OrgDb = org.EcK12.eg.db,  keyType="ENTREZID")
+```
+
+
+To color-map a specific pathway
+```{r}
+get_kegg_plots2 <- function(x){
+  
+    # select locus -- LFC data related to specific pathway x
+    geneList_selected <- geneList %>% filter(row.names(.) %in% kk_kegg@geneSets[[x]])
+
+    # gene.data is a data.frame where locus_tags are row.names and L2FC are values
+    # kk_kegg is output of enrichKEGG funciton; 
+    # kk_kegg contains locus-tags of eco (E. coli K12) 
+    # therefore gene.idtype = kegg
+    pathview(gene.data = geneList,  
+             gene.idtype='kegg',
+            pathway.id = kk_kegg@result$ID[x], 
+            out.suffix = glue('{strain}_{sugar}'),
+            low = 'blue', 
+            mid = 'grey', 
+            high = 'orange',
+            species = "eco", 
+            kegg.native = T, same.layer = F,
+       limit =list( gene=max(abs(geneList_selected)),
+                    cpd=1), 
+    dpi=800
+    )
+}
+```
+
+## 2. Get enriched KEGG pathways and visualize them 
+
+#### Set output and main (input) directory, for example, to a directory where the current script is located
+```{r}
+# get the location of the scipt
+script_path <- getActiveDocumentContext()$path
+script_dir <- dirname(script_path)
+outDir <- script_dir
+resDir <- paste0(script_dir, '/', 'DESeq_output')
+```
+
+### _E. coli_ K12
+
+Set log2FoldChange cutoff to 0.5. Iterate over enriched pathaways
+```{r message=FALSE, warning = FALSE}
+# specify variables
+strain <- 'K12'
+sugars <- c('SQ')
+L2FC_cutoff <- 0.5
+
+# generate kegg maps of enriched pathways
+for (i in 1:length(sugars)){
+  sugar <- sugars[i]
+  res <- read.csv(file.path(resDir, glue('{strain}_{sugar}_vs_gluc_results_padj0.05.csv')),
+                sep="\t")
+  # prepare geneList: data.frame with a single column L2FC; row.names are locus-tags
+  # select genes with |L2FC| > 2
+  geneList <- res %>% dplyr::select(., log2FoldChange) %>% filter(abs(log2FoldChange) > L2FC_cutoff)
+  
+  # enrichment analysis of KEGG pathways 
+  kk_kegg <- enrichKEGG(gene = row.names(geneList),
+                          organism ='eco',
+                          pvalueCutoff  = 0.05,
+                          qvalueCutoff  = 0.2)
+  
+  #filter result by q-value -- keep pathways that are significantly enriched
+  kk_kegg@result <- kk_kegg@result %>% filter(., qvalue<0.2)
+
+  # create output directory 
+  dir.create(file.path(outDir, glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview')), showWarnings = FALSE)
+  # set as working directory
+  setwd(file.path(outDir, glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview')))
+  
+  # iterate over IDs of enriched KEGG pathways and visualize expression on pathway maps
+  purrr::map(1:length(kk_kegg@result$ID), get_kegg_plots)
+  
+  # remove xml files
+  unlink(file.path(outDir, glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview'), '*.xml'))
+
+}
+```
+
+
+Get a specific kegg map
+```{r}
+# get kegg map for a specific pathway
+get_kegg_plots2(which(kk_kegg@result$ID == "eco02026"))
+```
+
+
+### _E. coli_ Nissle 1917
+
+log2FoldChange cutoff is 2
+```{r message=FALSE, warning = FALSE}
+# specify variables
+strain <- 'Nissle'
+L2FC_cutoff <- 0.5
+
+# import locus_tagsNissle2K12 mappings
+locusTags_Nissle2K12 <- read.csv('locus_tags_Nissle2K12_mmseqs2_rbh.txt', 
+                                 sep="\t") %>% 
+  dplyr::select(c(locus_tag_nissle, locus_tag_k12))
+
+sugars <- c('SQ')
+
+# generate kegg maps of enriched pathways
+for (i in 1:length(sugars)){
+  sugar <- sugars[i]
+  res <- read.csv(file.path(resDir, glue('{strain}_{sugar}_vs_gluc_results_padj0.05.csv')),
+                sep="\t")
+  
+  # prepare geneList: data.frame with a single column L2FC; row.names are locus-tags
+  # select genes with |L2FC| > 2
+  geneList_unmapped <- res %>% dplyr::select(., log2FoldChange) %>% 
+    filter(abs(log2FoldChange) > L2FC_cutoff)
+  
+  # filter locusTags mappings
+  locusTags_Nissle2K12_filt <- locusTags_Nissle2K12 %>% 
+    filter(locus_tag_nissle %in% row.names(geneList_unmapped))
+  
+  # construct geneList with new mapped locus_tags derived from model organism
+  geneList <- data.frame(locusTags_Nissle2K12_filt, 
+                         geneList_unmapped[locusTags_Nissle2K12_filt$locus_tag_nissle, ])[c(2,3)] %>%
+    dplyr::rename(., 'log2FoldChange'= 2) %>% 
+    `rownames<-`(.[,1]) %>% 
+    dplyr::select(log2FoldChange)
+  
+  # enrichment analysis of KEGG pathways 
+  kk_kegg <- enrichKEGG(gene = row.names(geneList),
+                          organism ='eco',
+                          pvalueCutoff  = 0.05,
+                          qvalueCutoff  = 0.2)
+  
+  #filter result by q-value -- keep pathways that are significantly enriched
+  kk_kegg@result <- kk_kegg@result %>% filter(., qvalue<0.2)
+
+  # create output directory 
+  dir.create(file.path(outDir, 
+                       glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview')), 
+             showWarnings = FALSE)
+  # set as working directory
+  setwd(file.path(outDir, glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview')))
+  
+  # iterate over IDs of enriched KEGG pathways and visualize expression on pathway maps
+  purrr::map(1:length(kk_kegg@result$ID), get_kegg_plots)
+  
+  # remove xml files
+  # unlink(file.path(outDir, glue('{strain}_{sugar}_L2FC{L2FC_cutoff}_pathview'), '*.xml'))
+
+  }
+
+```
+
+
+
