@@ -8,16 +8,16 @@ This folder contains basic scripts to annotate the phylogenetic distribution of 
 
 
 **Input data**:
-*`nt_tree_midpoint.nwk` - Phylogenetic tree of _E. coli_ strains from ShigellaProject (Seferbekova et al. 2021)
-*`clusters.txt` - Phylogroup coloring for the tree from ShigellaProject (Seferbekova et al. 2021)
-*`labels.txt` - Organism names for tree nodes from ShigellaProject (Seferbekova et al. 2021)
-*`total_stats.csv` - Strain statistics and metadata from ShigellaProject (Seferbekova et al. 2021)
+* `nt_tree_midpoint.nwk` - Phylogenetic tree of _E. coli_ strains from ShigellaProject (Seferbekova et al. 2021)
+* `clusters.txt` - Phylogroup coloring for the tree from ShigellaProject (Seferbekova et al. 2021)
+* `labels.txt` - Organism names for tree nodes from ShigellaProject (Seferbekova et al. 2021)
+* `total_stats.csv` - Strain statistics and metadata from ShigellaProject (Seferbekova et al. 2021)
 
 **Analysis outputs**:
-*`yih_genes_mmseq.tsv` - MMseqs2 homology results (from `run_mmseqs2.py`)
-*`yih_homologs_loci.csv` - _yih_ locus composition and genomic coordinates (from `get_yih_loci_data.ipynb`)
-*`target2info_data_altToGFFs.csv` - GFF-like annotations for all _yih_ homologs (from `get_yih_loci_data.ipynb`)
+* `yih_genes_mmseq.tsv` - MMseqs2 homology results (from `run_mmseqs2.py`)
+* `yih_homologs_loci.csv` - _yih_ locus composition and genomic coordinates (from `get_yih_loci_data.ipynb`)
+* `target2info_data_altToGFFs.csv` - GFF-like annotations for all _yih_ homologs (from `get_yih_loci_data.ipynb`)
 
 **iTOL visualization files**:
-`yih_loci_presence.txt` - binary gene presence/absence patterns (from` get_itol_files.ipynb`)
-`Ecoli.domains.txt` - genomic organization of _yih_ loci (from `get_itol_files.ipynb`)
+* `yih_loci_presence.txt` - binary gene presence/absence patterns (from` get_itol_files.ipynb`)
+* `Ecoli.domains.txt` - genomic organization of _yih_ loci (from `get_itol_files.ipynb`)
