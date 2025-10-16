@@ -3,3 +3,7 @@ The current folder contains minimal set of scripts used to perform differential 
 R Markdown scripts:
 * `run_gseKegg.Rmd`: generates gene expression heatmaps of top-enriched KEGG pathways in *E. coli* K-12 and Nissle 1917 strains (`Figure 6`).
 * `plot_qrtPCR_growth.Rmd`: plots results of qRT-PCR (`Figure 4`) and growth curves experiments (`Figure 5`).
+
+
+
+`K12_merged` and `Nissle_merged` are gene count matrices obtained using the featureCounts software
